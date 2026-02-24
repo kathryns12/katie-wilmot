@@ -7,10 +7,12 @@
 
 <style>
 
+/* Body & background */
 body {
   margin: 0;
+  padding: 0;
   height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
   background: linear-gradient(180deg, #ff3c78, #ff9bb3);
   font-family: 'Poppins', sans-serif;
   color: white;
@@ -18,16 +20,18 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Retro polka dots */
+/* Polka dot background */
 body::before {
   content: "";
   position: fixed;
-  width: 100%;
-  height: 100%;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-image: radial-gradient(white 3px, transparent 3px);
   background-size: 50px 50px;
   opacity: 0.25;
-  z-index: 0;
+  z-index: -1;
   animation: moveDots 20s linear infinite;
 }
 
@@ -36,7 +40,7 @@ body::before {
   to { background-position: 200px 200px; }
 }
 
-/* Envelope screen */
+/* Envelope opening screen */
 #envelopeScreen {
   position: fixed;
   width: 100%;
@@ -65,29 +69,37 @@ body::before {
   100% { transform: scale(1); }
 }
 
+/* Container for content */
 .container {
   position: relative;
   z-index: 1;
-  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
+/* Text & inputs */
 h1 {
   font-family: 'Great Vibes', cursive;
-  font-size: 60px;
+  font-size: clamp(36px, 8vw, 60px);
   text-shadow: 0 0 20px rgba(255,255,255,0.8);
 }
 
 input {
-  padding: 12px;
+  padding: clamp(10px, 1.5vw, 12px);
   border-radius: 30px;
   border: none;
   text-align: center;
-  font-size: 16px;
+  font-size: clamp(14px, 2.5vw, 18px);
   margin-top: 20px;
 }
 
 button {
-  padding: 12px 25px;
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 25px);
   border-radius: 30px;
   border: none;
   background: white;
@@ -96,6 +108,7 @@ button {
   margin: 10px;
   cursor: pointer;
   transition: 0.3s ease;
+  font-size: clamp(14px, 2.5vw, 18px);
 }
 
 button:hover {
@@ -105,15 +118,39 @@ button:hover {
 
 #message {
   margin-top: 30px;
-  font-size: 28px;
+  font-size: clamp(20px, 4vw, 28px);
   font-family: 'Great Vibes', cursive;
 }
 
 #countdown {
   margin-top: 20px;
-  font-size: 20px;
+  font-size: clamp(16px, 3vw, 20px);
 }
 
+#roles h2 {
+  font-size: clamp(20px, 4vw, 28px);
+  margin-top: 20px;
+}
+
+#roles button {
+  margin: 8px;
+  font-size: clamp(14px, 2.5vw, 18px);
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  background: white;
+  color: #ff3c78;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+#roles button:hover {
+  background: #ffe6f0;
+  transform: scale(1.08);
+}
+
+/* Floating music notes */
 .note {
   position: absolute;
   font-size: 22px;
@@ -136,7 +173,7 @@ button:hover {
 <div id="envelopeScreen">
   <div onclick="openEnvelope()">
     <div class="envelope">💌</div>
-    <p>Click to Open Your Pop Star Invitation</p>
+    <p>Click to Open Your Retro Pop Invitation</p>
   </div>
 </div>
 
