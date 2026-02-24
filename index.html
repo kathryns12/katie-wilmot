@@ -1,106 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Your Invitation</title>
+<title>Retro Pop Invitation</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 
 body {
   margin: 0;
   height: 100vh;
-  overflow: hidden;
-  background: radial-gradient(circle at top, #ffb6c1, #ff4d6d);
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #ff3c78, #ff9bb3);
   font-family: 'Poppins', sans-serif;
+  color: white;
+  text-align: center;
+  cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
+}
+
+/* Retro polka dots */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(white 3px, transparent 3px);
+  background-size: 50px 50px;
+  opacity: 0.25;
+  z-index: 0;
+  animation: moveDots 20s linear infinite;
+}
+
+@keyframes moveDots {
+  from { background-position: 0 0; }
+  to { background-position: 200px 200px; }
+}
+
+/* Envelope screen */
+#envelopeScreen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #ff3c78, #ff9bb3);
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  color: white;
+  z-index: 999;
 }
 
-/* Polka dot overlay */
-body::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(white 2px, transparent 2px);
-  background-size: 40px 40px;
-  opacity: 0.2;
-  z-index: 0;
+.envelope {
+  font-size: 90px;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+}
+
+.envelope p {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .container {
   position: relative;
   z-index: 1;
+  padding-top: 100px;
 }
 
 h1 {
   font-family: 'Great Vibes', cursive;
   font-size: 60px;
-  text-shadow: 0 0 15px rgba(255,255,255,0.8);
+  text-shadow: 0 0 20px rgba(255,255,255,0.8);
 }
 
 input {
   padding: 12px;
-  font-size: 18px;
   border-radius: 30px;
   border: none;
-  margin-top: 20px;
   text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
 }
 
 button {
   padding: 12px 25px;
-  font-size: 18px;
-  margin-top: 15px;
   border-radius: 30px;
   border: none;
   background: white;
-  color: #ff4d6d;
+  color: #ff3c78;
+  font-weight: bold;
+  margin: 10px;
   cursor: pointer;
   transition: 0.3s ease;
 }
 
 button:hover {
-  background: #ffe6eb;
-  transform: scale(1.05);
+  background: #ffe6f0;
+  transform: scale(1.08);
 }
 
 #message {
-  margin-top: 40px;
+  margin-top: 30px;
   font-size: 28px;
   font-family: 'Great Vibes', cursive;
-  animation: fadeIn 2s ease forwards;
 }
 
-/* Floating music notes */
+#countdown {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
 .note {
   position: absolute;
-  font-size: 24px;
+  font-size: 22px;
   animation: floatUp 6s linear infinite;
   opacity: 0.7;
 }
 
 @keyframes floatUp {
-  0% {
-    transform: translateY(100vh);
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-10vh);
-    opacity: 0;
-  }
-}
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
+  0% { transform: translateY(100vh); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
 }
 
 </style>
@@ -108,42 +132,122 @@ button:hover {
 
 <body>
 
+<!-- Envelope -->
+<div id="envelopeScreen">
+  <div onclick="openEnvelope()">
+    <div class="envelope">💌</div>
+    <p>Click to Open Your Pop Star Invitation</p>
+  </div>
+</div>
+
+<!-- Main Content -->
 <div class="container">
-  <h1>A Special Invitation</h1>
+  <h1>You're On The Guest List</h1>
 
   <input type="text" id="nameInput" placeholder="Enter your name">
   <br>
-  <button onclick="showMessage()">Open Your Invitation 🎀</button>
+  <button onclick="showMessage()">Unlock My Invitation 🎀</button>
 
   <div id="message"></div>
+  <div id="countdown"></div>
+
+  <div id="roles" style="display:none;">
+    <h2>Choose Your Role</h2>
+    <button onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
+    <button onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
+    <button onclick="selectRole('Backstage Muse')">🎀 Backstage Muse</button>
+  </div>
+
+  <div id="roleResult"></div>
 </div>
 
+<!-- Music -->
+<audio id="bgMusic" loop>
+  <source src="YOUR-MP3-LINK-HERE.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+
+/* Envelope */
+function openEnvelope() {
+  document.getElementById("envelopeScreen").style.display = "none";
+  fadeInMusic();
+}
+
+/* Personalized message */
 function showMessage() {
   var name = document.getElementById("nameInput").value;
   if(name.trim() === "") {
-    alert("Please enter your name first 🎀");
+    alert("Enter your name, superstar 🎀");
     return;
   }
+
   document.getElementById("message").innerHTML =
-  "Dearest " + name + " 💗<br><br>You are cordially invited to a night of music, magic, and polka-dotted dreams.";
+  "Dearest " + name + " 💖<br>You are invited to the most glamorous retro pop soirée of the season.";
+
+  document.getElementById("roles").style.display = "block";
 }
 
-// Generate floating music notes
+/* Countdown */
+const eventDate = new Date("March 30, 2026 19:00:00").getTime();
+
+setInterval(function() {
+  const now = new Date().getTime();
+  const distance = eventDate - now;
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((distance / 1000 / 60) % 60);
+
+  document.getElementById("countdown").innerHTML =
+  "💋 Show begins in " + days + "d " + hours + "h " + minutes + "m";
+}, 1000);
+
+/* Choose role */
+function selectRole(role) {
+  document.getElementById("roleResult").innerHTML =
+    "✨ You are officially our " + role + "! ✨";
+}
+
+/* Floating music notes */
 function createNote() {
   const note = document.createElement("div");
   note.classList.add("note");
   note.innerHTML = "🎵";
   note.style.left = Math.random() * 100 + "vw";
-  note.style.animationDuration = (4 + Math.random() * 4) + "s";
   document.body.appendChild(note);
+  setTimeout(() => { note.remove(); }, 6000);
+}
+setInterval(createNote, 800);
 
-  setTimeout(() => {
-    note.remove();
-  }, 6000);
+/* Glitter mouse trail */
+document.addEventListener("mousemove", function(e) {
+  const sparkle = document.createElement("div");
+  sparkle.innerHTML = "✨";
+  sparkle.style.position = "absolute";
+  sparkle.style.left = e.pageX + "px";
+  sparkle.style.top = e.pageY + "px";
+  sparkle.style.pointerEvents = "none";
+  sparkle.style.fontSize = "12px";
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 500);
+});
+
+/* Fade-in music */
+function fadeInMusic() {
+  const music = document.getElementById("bgMusic");
+  music.volume = 0;
+  music.play();
+
+  let fade = setInterval(() => {
+    if (music.volume < 0.5) {
+      music.volume += 0.02;
+    } else {
+      clearInterval(fade);
+    }
+  }, 200);
 }
 
-setInterval(createNote, 800);
 </script>
 
 </body>
