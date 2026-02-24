@@ -7,11 +7,15 @@
 
 <style>
 
-/* Body & background */
+/* Fix mobile 100vh */
+:root {
+  --vh: 100vh;
+}
+
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: var(--vh);
   overflow: hidden;
   background: linear-gradient(180deg, #ff3c78, #ff9bb3);
   font-family: 'Poppins', sans-serif;
@@ -52,15 +56,47 @@ body::before {
   z-index: 999;
 }
 
-.envelope {
-  font-size: 90px;
+.envelope-container {
+  position: relative;
+  width: 120px;
+  height: 90px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   animation: pulse 2s infinite;
 }
 
-.envelope p {
-  font-size: 18px;
+.envelope-flap {
+  width: 100px;
+  height: 50px;
+  background: #ffe6eb;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  z-index: 2;
+  transition: transform 1s ease;
+}
+
+.envelope-body {
+  width: 100px;
+  height: 50px;
+  background: #ff4d6d;
+  border-radius: 0 0 5px 5px;
+  margin-top: -5px;
+  z-index: 1;
+  transition: transform 1s ease;
+}
+
+.open-flap { transform: rotateX(180deg) translateY(-25px); }
+.slide-envelope { transform: translateY(-100px); }
+
+.envelope-container p {
+  font-size: 16px;
   margin-top: 10px;
+  color: white;
 }
 
 @keyframes pulse {
@@ -77,7 +113,7 @@ body::before {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: var(--vh);
   padding: 0 20px;
   box-sizing: border-box;
 }
@@ -111,58 +147,18 @@ button {
   font-size: clamp(14px, 2.5vw, 18px);
 }
 
-button:hover {
-  background: #ffe6f0;
-  transform: scale(1.08);
-}
+button:hover { background: #ffe6f0; transform: scale(1.08); }
 
-#message {
-  margin-top: 30px;
-  font-size: clamp(20px, 4vw, 28px);
-  font-family: 'Great Vibes', cursive;
-}
+#message { margin-top: 30px; font-size: clamp(20px, 4vw, 28px); font-family: 'Great Vibes', cursive; }
+#countdown { margin-top: 20px; font-size: clamp(16px, 3vw, 20px); }
 
-#countdown {
-  margin-top: 20px;
-  font-size: clamp(16px, 3vw, 20px);
-}
-
-#roles h2 {
-  font-size: clamp(20px, 4vw, 28px);
-  margin-top: 20px;
-}
-
-#roles button {
-  margin: 8px;
-  font-size: clamp(14px, 2.5vw, 18px);
-  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
-  border-radius: 30px;
-  border: none;
-  cursor: pointer;
-  background: white;
-  color: #ff3c78;
-  font-weight: bold;
-  transition: 0.3s ease;
-}
-
-#roles button:hover {
-  background: #ffe6f0;
-  transform: scale(1.08);
-}
+#roles h2 { font-size: clamp(20px, 4vw, 28px); margin-top: 20px; }
+#roles button { margin: 8px; font-size: clamp(14px,2.5vw,18px); padding: clamp(8px,1.5vw,12px) clamp(12px,2vw,20px); border-radius:30px; border:none; cursor:pointer; background:white; color:#ff3c78; font-weight:bold; transition:0.3s ease; }
+#roles button:hover { background:#ffe6f0; transform:scale(1.08); }
 
 /* Floating music notes */
-.note {
-  position: absolute;
-  font-size: 22px;
-  animation: floatUp 6s linear infinite;
-  opacity: 0.7;
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(100vh); opacity: 0; }
-  30% { opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
-}
+.note { position: absolute; font-size: 22px; animation: floatUp 6s linear infinite; opacity: 0.7; }
+@keyframes floatUp { 0% { transform: translateY(100vh); opacity:0; } 30% { opacity:1; } 100% { transform: translateY(-10vh); opacity:0; } }
 
 </style>
 </head>
@@ -171,8 +167,9 @@ button:hover {
 
 <!-- Envelope -->
 <div id="envelopeScreen">
-  <div onclick="openEnvelope()">
-    <div class="envelope">💌</div>
+  <div class="envelope-container" onclick="openEnvelope()">
+    <div class="envelope-flap">💌</div>
+    <div class="envelope-body"></div>
     <p>Click to Open Your Retro Pop Invitation</p>
   </div>
 </div>
@@ -205,39 +202,48 @@ button:hover {
 
 <script>
 
-/* Envelope */
+// Fix mobile 100vh
+function setVh() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh*100}px`);
+}
+window.addEventListener('resize', setVh);
+setVh();
+
+/* Envelope animation */
 function openEnvelope() {
-  document.getElementById("envelopeScreen").style.display = "none";
-  fadeInMusic();
+  const flap = document.querySelector(".envelope-flap");
+  const body = document.querySelector(".envelope-body");
+  const screen = document.getElementById("envelopeScreen");
+
+  flap.classList.add("open-flap");
+  body.classList.add("slide-envelope");
+
+  setTimeout(() => {
+    screen.style.display = "none";
+    fadeInMusic();
+  }, 1200);
 }
 
 /* Personalized message */
 function showMessage() {
   var name = document.getElementById("nameInput").value;
-  if(name.trim() === "") {
-    alert("Enter your name, superstar 🎀");
-    return;
-  }
-
+  if(name.trim() === "") { alert("Enter your name, superstar 🎀"); return; }
   document.getElementById("message").innerHTML =
-  "Dearest " + name + " 💖<br>You are invited to the most glamorous retro pop soirée of the season.";
-
+    "Dearest " + name + " 💖<br>You are invited to the most glamorous retro pop soirée of the season.";
   document.getElementById("roles").style.display = "block";
 }
 
 /* Countdown */
 const eventDate = new Date("March 30, 2026 19:00:00").getTime();
-
 setInterval(function() {
   const now = new Date().getTime();
   const distance = eventDate - now;
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(distance / (1000*60*60*24));
+  const hours = Math.floor((distance / (1000*60*60)) % 24);
   const minutes = Math.floor((distance / 1000 / 60) % 60);
-
   document.getElementById("countdown").innerHTML =
-  "💋 Show begins in " + days + "d " + hours + "h " + minutes + "m";
+    "💋 Show begins in " + days + "d " + hours + "h " + minutes + "m";
 }, 1000);
 
 /* Choose role */
@@ -275,17 +281,12 @@ function fadeInMusic() {
   const music = document.getElementById("bgMusic");
   music.volume = 0;
   music.play();
-
   let fade = setInterval(() => {
-    if (music.volume < 0.5) {
-      music.volume += 0.02;
-    } else {
-      clearInterval(fade);
-    }
+    if(music.volume < 0.5) music.volume += 0.02;
+    else clearInterval(fade);
   }, 200);
 }
 
 </script>
-
 </body>
 </html>
