@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Retro Pop Invitation</title>
+<title>katie's invite 𝄞</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 
@@ -168,22 +168,22 @@ button:hover {
 <!-- Envelope -->
 <div id="envelopeScreen">
   <div class="envelope-container" onclick="openEnvelope()">💌</div>
-  <p>Click to Open Your Retro Pop Invitation</p>
+  <p>click to save the date !</p>
 </div>
 
 <!-- Main Content -->
 <div class="container">
-  <h1>You're On The Guest List</h1>
+  <h1>reserve a seat for a surprise ꩜</h1>
 
-  <input type="text" id="nameInput" placeholder="Enter your name">
+  <input type="text" id="nameInput" placeholder="enter your artist's name">
   <br>
-  <button onclick="showMessage()">Unlock My Invitation 🎀</button>
+  <button onclick="showMessage()">nlock my invitation 𖹭.ᐟ</button>
 
   <div id="message"></div>
   <div id="countdown"></div>
 
   <div id="roles" style="display:none;">
-    <h2>Choose Your Role</h2>
+    <h2>choose your role</h2>
     <button onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
     <button onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
     <button onclick="selectRole('Backstage Muse')">🎀 Backstage Muse</button>
@@ -215,14 +215,14 @@ function openEnvelope() {
 // Personalized message
 function showMessage() {
   var name = document.getElementById("nameInput").value;
-  if(name.trim() === "") { alert("Enter your name, superstar 🎀"); return; }
+  if(name.trim() === "") { alert("Enter your name, superstar 𖹭.ᐟ"); return; }
   document.getElementById("message").innerHTML =
-    "Dearest " + name + " 💖<br>You are invited to the most glamorous retro pop soirée of the season.";
+    "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
   document.getElementById("roles").style.display = "block";
 }
 
 // Countdown
-const eventDate = new Date("March 30, 2026 19:00:00").getTime();
+const eventDate = new Date("March 20, 2026 18:00:00").getTime();
 setInterval(function() {
   const now = new Date().getTime();
   const distance = eventDate - now;
@@ -230,13 +230,13 @@ setInterval(function() {
   const hours = Math.floor((distance / (1000*60*60)) % 24);
   const minutes = Math.floor((distance / 1000 / 60) % 60);
   document.getElementById("countdown").innerHTML =
-    "💋 Show begins in " + days + "d " + hours + "h " + minutes + "m";
+    "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
 }, 1000);
 
 // Role selection
 function selectRole(role) {
   document.getElementById("roleResult").innerHTML =
-    "✨ You are officially our " + role + "! ✨";
+    "✴︎ you are officially our " + role + "! ✴︎";
 }
 
 // Glitter mouse trail
