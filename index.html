@@ -8,6 +8,10 @@
 <style>
 :root { --vh: 100vh; }
 
+html {
+  scroll-behavior: smooth; /* smooth scrolling */
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -18,17 +22,6 @@ body {
   color: #8c0f14;
   text-align: center;
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
-}
-
-/* Smooth fade utility */
-.fadeIn {
-  opacity: 0;
-  animation: smoothFade 0.8s ease forwards;
-}
-
-@keyframes smoothFade {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Polka dots */
@@ -46,6 +39,17 @@ body.showDots::before {
 @keyframes moveDots {
   from { background-position: 0px 0px; }
   to   { background-position: 300px 0px; }
+}
+
+/* Smooth fade utility */
+.fadeIn {
+  opacity: 0;
+  animation: smoothFade 0.8s ease forwards;
+}
+
+@keyframes smoothFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Envelope */
@@ -77,6 +81,13 @@ body.showDots::before {
   padding: 20px 10%;
 }
 
+@media (min-width: 768px) {
+  /* Optional extra polishing: disable scroll anchoring on desktops */
+  .container {
+    overflow-anchor: none;
+  }
+}
+
 h1 { font-size: clamp(36px, 8vw, 60px); }
 
 input {
@@ -105,6 +116,29 @@ button:hover {
   background: #ffe6e9;
   transform: scale(1.08);
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
+}
+
+/* Share container (fade & no layout shift) */
+#shareContainer {
+  margin-top: 20px;
+  min-height: 60px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#shareContainer.visible {
+  opacity: 1;
+}
+
+#shareContainer button {
+  background: #8c0f14;
+  color: white;
+  border: none;
+}
+
+#shareContainer button:hover {
+  background: #b81d24;
+  box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
 }
 
 #message, #countdown {
@@ -138,7 +172,7 @@ button:hover {
   transform: rotate(0deg) scale(1.05);
 }
 
-/* Role container (prevents scroll jump) */
+/* Role container (fade & min-height to prevent scroll jump) */
 #rolePolaroid {
   margin-top: 25px;
   display: flex;
@@ -150,29 +184,6 @@ button:hover {
 
 #rolePolaroid.fade-out {
   opacity: 0;
-}
-
-/* Share container (no layout shift) */
-#shareContainer {
-  margin-top: 20px;
-  min-height: 60px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-#shareContainer.visible {
-  opacity: 1;
-}
-
-#shareContainer button {
-  background: #8c0f14;
-  color: white;
-  border: none;
-}
-
-#shareContainer button:hover {
-  background: #b81d24;
-  box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
 }
 </style>
 </head>
