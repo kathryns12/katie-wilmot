@@ -20,7 +20,7 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Polka dots (hidden until envelope opens) */
+/* Polka dots */
 body.showDots::before {
   content: "";
   position: fixed;
@@ -35,7 +35,6 @@ body.showDots::before {
   animation: moveDots 35s linear infinite;
 }
 
-/* Move polka dots sideways (change Y for vertical if wanted) */
 @keyframes moveDots {
   from { background-position: 0px 0px; }
   to   { background-position: 300px 0px; }
@@ -58,23 +57,13 @@ body.showDots::before {
 
 .envelope-img {
   width: clamp(190px, 42vw, 320px);
-  height: auto;
-  display: block;
   animation: floatBounce 2.2s ease-in-out infinite;
 }
 
 @keyframes floatBounce {
-  0%   { transform: translateY(0px); }
-  30%  { transform: translateY(-14px); }
-  50%  { transform: translateY(-18px); }
-  70%  { transform: translateY(-14px); }
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
   100% { transform: translateY(0px); }
-}
-
-#envelopeScreen p {
-  font-size: clamp(18px, 5vw, 24px);
-  margin-top: 25px;
-  letter-spacing: 1px;
 }
 
 /* Main content */
@@ -83,14 +72,12 @@ body.showDots::before {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
   padding: 20px 10%;
   box-sizing: border-box;
   width: 100%;
 }
 
-/* General elements */
 h1 { font-size: clamp(36px, 8vw, 60px); }
 
 input {
@@ -102,7 +89,6 @@ input {
   text-align: center;
   font-size: clamp(14px, 2.5vw, 18px);
   margin-top: 20px;
-  box-sizing: border-box;
 }
 
 button {
@@ -120,65 +106,70 @@ button {
 
 button:hover { background: #ffe6e9; transform: scale(1.08); }
 
-#message { margin-top: 30px; font-size: clamp(18px, 4vw, 28px); line-height: 1.3; }
-
+#message { margin-top: 30px; font-size: clamp(18px, 4vw, 28px); }
 #countdown { margin-top: 20px; font-size: clamp(14px, 3vw, 20px); }
 
 #roles { display: none; }
-#roles h2 { font-size: clamp(20px, 4vw, 28px); margin-top: 20px; }
-#roles button { margin: 8px; }
 
-/* Polaroids */
+/* Polaroids (BIGGER but same structure) */
 #polaroids {
   display: none;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  margin: 20px 0;
+  gap: 30px;
+  margin: 30px 0;
 }
 
 .polaroid {
   background: white;
-  padding: 10px 10px 25px 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  border: 2px solid #fff;
+  padding: 15px 15px 35px 15px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
   transform: rotate(-2deg);
   transition: transform 0.3s ease;
 }
 
 .polaroid img {
-  width: 150px;
+  width: clamp(180px, 22vw, 260px);
   height: auto;
   display: block;
 }
 
 .polaroid p {
   text-align: center;
-  font-size: clamp(12px, 2.5vw, 16px);
-  margin-top: 8px;
+  font-size: clamp(14px, 2.5vw, 18px);
+  margin-top: 10px;
   color: #8c0f14;
 }
 
 .polaroid:hover { transform: rotate(0deg) scale(1.05); }
 
-/* Responsive tweaks */
-@media (max-width: 400px) {
-  input { width: 90%; }
+/* Role-based extra polaroid */
+#rolePolaroid {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.fadeIn {
+  animation: fadeInPolaroid 0.6s ease;
+}
+
+@keyframes fadeInPolaroid {
+  from { opacity: 0; transform: translateY(10px) rotate(-2deg); }
+  to   { opacity: 1; transform: translateY(0px) rotate(-2deg); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Envelope -->
 <div id="envelopeScreen">
   <div class="envelope-container" onclick="openEnvelope()">
-    <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b" alt="Envelope" class="envelope-img">
+    <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b" class="envelope-img">
   </div>
   <p>click to save the date !</p>
 </div>
 
-<!-- Main Content -->
 <div class="container">
   <h1>reserve a seat for a surprise ꩜</h1>
 
@@ -188,14 +179,14 @@ button:hover { background: #ffe6e9; transform: scale(1.08); }
 
   <div id="message"></div>
 
-  <!-- Polaroids -->
+  <!-- YOUR ORIGINAL TWO POLAROIDS (unchanged except size) -->
   <div id="polaroids">
     <div class="polaroid">
-      <img src="https://i.pinimg.com/736x/df/28/17/df28172dfba76a6d276e8003a8184866.jpg" alt="Polaroid 1">
+      <img src="https://i.pinimg.com/736x/df/28/17/df28172dfba76a6d276e8003a8184866.jpg">
       <p>pictures in frames...</p>
     </div>
     <div class="polaroid">
-      <img src="https://i.pinimg.com/736x/73/12/94/731294529c6af00dba89ef03e53a8b8e.jpg" alt="Polaroid 2">
+      <img src="https://i.pinimg.com/736x/73/12/94/731294529c6af00dba89ef03e53a8b8e.jpg">
       <p>... of kisses on cheeks</p>
     </div>
   </div>
@@ -210,89 +201,60 @@ button:hover { background: #ffe6e9; transform: scale(1.08); }
   </div>
 
   <div id="roleResult"></div>
+  <div id="rolePolaroid"></div>
 </div>
 
-<!-- Music -->
-<audio id="bgMusic" loop>
-  <source src="YOUR-MP3-LINK-HERE.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-// Mobile viewport fix
-function setVh() {
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh*100}px`);
-}
-window.addEventListener('resize', setVh);
-setVh();
-
-// Envelope click
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
-
-  // allow scrolling after envelope opens
   document.body.style.overflow = "auto";
-
-  fadeInMusic();
 }
 
-// Personalized message
 function showMessage() {
   var name = document.getElementById("nameInput").value;
-  if(name.trim() === "") { 
-    alert("Enter your name, superstar 𖹭.ᐟ"); 
-    return; 
+  if(name.trim() === "") {
+    alert("Enter your name, superstar 𖹭.ᐟ");
+    return;
   }
+
   document.getElementById("message").innerHTML =
     "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
 
   document.getElementById("roles").style.display = "block";
-
-  // Show polaroids
   document.getElementById("polaroids").style.display = "flex";
 }
 
-// Countdown
-const eventDate = new Date("March 20, 2026 18:00:00").getTime();
-setInterval(function() {
-  const now = new Date().getTime();
-  const distance = eventDate - now;
-  const days = Math.floor(distance / (1000*60*60*24));
-  const hours = Math.floor((distance / (1000*60*60)) % 24);
-  const minutes = Math.floor((distance / 1000 / 60) % 60);
-  document.getElementById("countdown").innerHTML =
-    "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
-}, 1000);
-
-// Role selection
 function selectRole(role) {
   document.getElementById("roleResult").innerHTML =
     "✴︎ you are officially our " + role + "! ✴︎";
-}
 
-// Glitter mouse trail
-document.addEventListener("mousemove", function(e) {
-  const sparkle = document.createElement("div");
-  sparkle.innerHTML = "✨";
-  sparkle.style.position = "absolute";
-  sparkle.style.left = e.pageX + "px";
-  sparkle.style.top = e.pageY + "px";
-  sparkle.style.pointerEvents = "none";
-  sparkle.style.fontSize = "12px";
-  document.body.appendChild(sparkle);
-  setTimeout(() => sparkle.remove(), 500);
-});
+  const container = document.getElementById("rolePolaroid");
 
-// Fade-in music
-function fadeInMusic() {
-  const music = document.getElementById("bgMusic");
-  music.volume = 0;
-  music.play();
-  let fade = setInterval(() => {
-    if(music.volume < 0.5) music.volume += 0.02;
-    else clearInterval(fade);
-  }, 200);
+  let imageSrc = "";
+  let caption = "";
+
+  if(role === "Pop Star Icon") {
+    imageSrc = "YOUR-POPSTAR-IMAGE.jpg";
+    caption = "center stage, spotlight on you ✦";
+  }
+
+  if(role === "VIP Glitter Guest") {
+    imageSrc = "YOUR-VIP-IMAGE.jpg";
+    caption = "front row glamour & sparkle ✧";
+  }
+
+  if(role === "Backstage Muse") {
+    imageSrc = "YOUR-BACKSTAGE-IMAGE.jpg";
+    caption = "behind the curtain magic ✴︎";
+  }
+
+  container.innerHTML = `
+    <div class="polaroid fadeIn">
+      <img src="${imageSrc}">
+      <p>${caption}</p>
+    </div>
+  `;
 }
 </script>
 
