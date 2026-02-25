@@ -42,6 +42,12 @@ body.showDots::before {
   to { background-position: 200px 200px; }
 }
 
+@keyframes floatBounce {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
 /* Envelope screen */
 #envelopeScreen {
   position: fixed;
@@ -59,15 +65,22 @@ body.showDots::before {
   cursor: pointer;
 }
 
+.envelope-container:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
 .envelope-img {
-  width: clamp(150px, 35vw, 260px);
+  width: clamp(190px, 42vw, 320px);
   height: auto;
   display: block;
+  animation: floatBounce 3s ease-in-out infinite;
 }
 
 #envelopeScreen p {
-  font-size: clamp(14px, 4vw, 18px);
-  margin-top: 20px;
+  font-size: clamp(18px, 5vw, 24px);
+  margin-top: 25px;
+  letter-spacing: 1px;
 }
 
 /* Main content */
