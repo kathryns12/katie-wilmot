@@ -22,8 +22,22 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Polka dot background */
+/* Polka dot background 
 body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: radial-gradient(#8c0f14 2px, transparent 2px);
+  background-size: 30px 30px;
+  opacity: 0.25;
+  z-index: -1;
+  animation: moveDots 20s linear infinite;
+} */
+
+.container::before {
   content: "";
   position: fixed;
   top: 0;
@@ -56,6 +70,13 @@ body::before {
   padding: 20px;
 }
 
+#envelopeScreen p {
+  font-size: clamp(14px, 4vw, 18px);
+  margin-top: 20px;
+  color: #8c0f14;
+  z-index: 1000;
+}
+
 .envelope-container {
   font-size: clamp(100px, 25vw, 200px);
   cursor: pointer;
@@ -65,6 +86,7 @@ body::before {
 .envelope-img {
   width: clamp(120px, 30vw, 250px);
   height: auto;
+  display: block;
 }
 
 @keyframes pulse {
