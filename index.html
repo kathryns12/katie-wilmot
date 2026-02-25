@@ -71,22 +71,23 @@ body.showDots::before {
   100% { transform: translateY(0); }
 }
 
-.container {
-  padding: 20px 10%;
+.container { padding: 20px 10%; }
+
+h1 {
+  font-size: clamp(36px, 8vw, 60px);
+  margin-top: 0;
+  opacity: 0; /* will fade in */
 }
-
-@media (min-width: 768px) { .container { overflow-anchor: none; } }
-
-h1 { font-size: clamp(36px, 8vw, 60px); }
 
 input {
   width: 80%;
   max-width: 300px;
   padding: 12px;
   border-radius: 30px;
-  border: none;
+  border: 2px solid #8c0f14; /* matches unlock button */
   text-align: center;
   margin-top: 20px;
+  opacity: 0; /* will fade in */
 }
 
 button {
@@ -99,6 +100,7 @@ button {
   margin: 10px;
   cursor: pointer;
   transition: 0.3s ease;
+  opacity: 0; /* will fade in */
 }
 
 button:hover {
@@ -127,10 +129,14 @@ button:hover {
   box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
 }
 
-#message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
+#message {
+  margin-top: 25px;
+  font-size: clamp(18px, 4vw, 28px);
+}
 
 #countdownContainer {
   margin-top: 25px;
+  margin-bottom: 25px; /* space before roles */
   display: none;
   flex-direction: column;
   align-items: center;
@@ -165,16 +171,9 @@ button:hover {
   animation: pulse 2s infinite;
 }
 
-/* Pulsing glow effect */
 @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 4px 10px rgba(255,143,163,0.5), 0 0 0 rgba(255,179,193,0);
-  }
-  50% {
-    transform: scale(1.08);
-    box-shadow: 0 6px 14px rgba(255,143,163,0.8), 0 0 12px rgba(255,179,193,0.5);
-  }
+  0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);}
+  50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);}
 }
 
 #roles { display: none; }
@@ -209,6 +208,12 @@ button:hover {
 }
 
 #rolePolaroid.fade-out { opacity: 0; }
+
+#roleResult {
+  font-size: clamp(22px, 5vw, 36px); /* bigger text */
+  opacity: 0; /* will fade in like polaroids */
+  transition: opacity 0.35s ease;
+}
 </style>
 </head>
 
@@ -223,7 +228,7 @@ button:hover {
 
 <div class="container">
 
-<h1>reserve a seat for a surprise ꩜</h1>
+<h1 id="mainHeading">reserve a seat for a surprise ꩜</h1>
 
 <input type="text" id="nameInput" placeholder="enter your artist's name">
 <br>
@@ -242,7 +247,6 @@ button:hover {
   </div>
 </div>
 
-<!-- Countdown container -->
 <div id="countdownContainer">
   <div id="countdownLabel">✦ show begins in ✦</div>
   <div id="countdownBoxes">
@@ -277,28 +281,27 @@ function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
   document.body.style.overflow = "auto";
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
+
+  // Fade in heading, input, and button
+  const fadeElements = [document.getElementById("mainHeading"), document.getElementById("nameInput"), document.querySelector("button")];
+  fadeElements.forEach(el => { el.classList.add("fadeIn"); });
 }
 
 function showMessage() {
   let name = document.getElementById("nameInput").value;
-  if(name.trim() === "") {
-    alert("Enter your name, superstar 𖹭.ᐟ");
-    return;
-  }
+  if(name.trim() === "") { alert("Enter your name, superstar 𖹭.ᐟ"); return; }
 
   invitedName = name;
 
   let message = document.getElementById("message");
-  message.innerHTML =
-    "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
+  message.innerHTML = "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
   message.classList.add("fadeIn");
 
   let polaroids = document.getElementById("polaroids");
   polaroids.style.display = "flex";
   polaroids.classList.add("fadeIn");
 
-  // Show countdown container with fade
   const countdownContainer = document.getElementById("countdownContainer");
   countdownContainer.style.display = "flex";
   countdownContainer.classList.add("fadeIn");
@@ -308,96 +311,47 @@ function showMessage() {
   startCountdown();
 }
 
-// Countdown numeric-only, in boxes, visually pulsing
 function startCountdown() {
-  if (countdownInterval) clearInterval(countdownInterval);
-
-  const eventDate = new Date(Date.UTC(2026, 2, 20, 3, 0, 0)).getTime();
+  if(countdownInterval) clearInterval(countdownInterval);
+  const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
 
   function updateCountdown() {
     const now = new Date().getTime();
     const distance = eventDate - now;
-
-    if(distance <= 0) {
-      clearInterval(countdownInterval);
-      document.getElementById("daysBox").textContent = "0";
-      document.getElementById("hoursBox").textContent = "0";
-      document.getElementById("minutesBox").textContent = "0";
-      return;
-    }
-
-    const days = Math.floor(distance / (1000*60*60*24));
-    const hours = Math.floor((distance / (1000*60*60)) % 24);
-    const minutes = Math.floor((distance / 1000 / 60) % 60);
-
-    document.getElementById("daysBox").textContent = days;
-    document.getElementById("hoursBox").textContent = hours;
-    document.getElementById("minutesBox").textContent = minutes;
+    if(distance<=0){ clearInterval(countdownInterval); document.getElementById("daysBox").textContent="0"; document.getElementById("hoursBox").textContent="0"; document.getElementById("minutesBox").textContent="0"; return; }
+    document.getElementById("daysBox").textContent = Math.floor(distance/(1000*60*60*24));
+    document.getElementById("hoursBox").textContent = Math.floor((distance/(1000*60*60))%24);
+    document.getElementById("minutesBox").textContent = Math.floor((distance/1000/60)%60);
   }
 
   updateCountdown();
-  countdownInterval = setInterval(updateCountdown, 1000);
+  countdownInterval = setInterval(updateCountdown,1000);
 }
 
 function selectRole(role) {
   selectedRole = role;
-
-  document.getElementById("roleResult").innerHTML =
-    "✴︎ you are officially our " + role + "! ✴︎";
+  const result = document.getElementById("roleResult");
+  result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
+  result.style.opacity = 0;
+  setTimeout(()=>{ result.style.opacity=1; },50);
 
   const container = document.getElementById("rolePolaroid");
-
-  let imageSrc = "";
-  let caption = "";
-
-  if(role === "Pop Star Icon") {
-    imageSrc = "https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
-    caption = "center stage, spotlight on you ✦";
-  }
-
-  if(role === "VIP Glitter Guest") {
-    imageSrc = "https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
-    caption = "front row glamour & sparkle ✧";
-  }
-
-  if(role === "Backstage Muse") {
-    imageSrc = "https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
-    caption = "behind the curtain magic ✴︎";
-  }
+  let imageSrc="",caption="";
+  if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
+  if(role==="VIP Glitter Guest"){ imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg"; caption="front row glamour & sparkle ✧";}
+  if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
 
   container.classList.add("fade-out");
+  setTimeout(()=>{ container.innerHTML=`<div class="polaroid"><img src="${imageSrc}"><p>${caption}</p></div>`; container.classList.remove("fade-out");},300);
 
-  setTimeout(() => {
-    container.innerHTML = `
-      <div class="polaroid">
-        <img src="${imageSrc}">
-        <p>${caption}</p>
-      </div>
-    `;
-    container.classList.remove("fade-out");
-  }, 300);
-
-  document.getElementById("shareContainer").classList.add("visible");
+  const share = document.getElementById("shareContainer");
+  share.classList.add("visible");
 }
 
 function shareInvite() {
-  const shareText =
-    "I just got invited to the biggest reveal of the year ✨\n\n" +
-    "Role: " + selectedRole + "\n" +
-    "Name on the guest list: " + invitedName + " 💌\n\n" +
-    "Reserve your seat too 💖\n" +
-    window.location.href;
-
-  if (navigator.share) {
-    navigator.share({
-      title: "I got invited ✨",
-      text: shareText,
-      url: window.location.href
-    });
-  } else {
-    navigator.clipboard.writeText(shareText);
-    alert("Invitation copied to clipboard ✨");
-  }
+  const shareText = "I just got invited to the biggest reveal of the year ✨\n\nRole: "+selectedRole+"\nName on the guest list: "+invitedName+" 💌\n\nReserve your seat too 💖\n"+window.location.href;
+  if(navigator.share){navigator.share({title:"I got invited ✨",text:shareText,url:window.location.href});} 
+  else { navigator.clipboard.writeText(shareText); alert("Invitation copied to clipboard ✨"); }
 }
 </script>
 
