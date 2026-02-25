@@ -62,6 +62,11 @@ body::before {
   animation: pulse 2s infinite;
 }
 
+.envelope-img {
+  width: clamp(120px, 30vw, 250px);
+  height: auto;
+}
+
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
@@ -167,7 +172,9 @@ button:hover {
 
 <!-- Envelope -->
 <div id="envelopeScreen">
-  <div class="envelope-container" onclick="openEnvelope()">💌</div>
+  <div class="envelope-container" onclick="openEnvelope()">
+    <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b" alt="Envelope" class="envelope-img">
+</div></div>
   <p>click to save the date !</p>
 </div>
 
