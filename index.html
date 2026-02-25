@@ -76,7 +76,8 @@ body.showDots::before {
 h1 {
   font-size: clamp(36px, 8vw, 60px);
   margin-top: 0;
-  opacity: 0; /* will fade in */
+  margin-bottom: 10px; /* closer to input */
+  opacity: 0;
 }
 
 input {
@@ -84,13 +85,18 @@ input {
   max-width: 300px;
   padding: 12px;
   border-radius: 30px;
-  border: 2px solid #8c0f14; /* matches unlock button */
+  border: 2px solid #8c0f14;
   text-align: center;
-  margin-top: 20px;
-  opacity: 0; /* will fade in */
+  margin-top: 10px; /* slightly closer */
+  opacity: 0;
 }
 
-button {
+input:focus {
+  outline: 2px solid #8c0f14; /* keeps outline same as unlock button */
+  outline-offset: 0;
+}
+
+button.unlock {
   padding: 10px 20px;
   border-radius: 30px;
   border: 1px solid #8c0f14;
@@ -100,10 +106,10 @@ button {
   margin: 10px;
   cursor: pointer;
   transition: 0.3s ease;
-  opacity: 0; /* will fade in */
+  opacity: 0;
 }
 
-button:hover {
+button.unlock:hover {
   background: #ffe6e9;
   transform: scale(1.08);
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
@@ -113,7 +119,7 @@ button:hover {
   margin-top: 20px;
   min-height: 60px;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
 }
 
 #shareContainer.visible { opacity: 1; }
@@ -129,14 +135,11 @@ button:hover {
   box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
 }
 
-#message {
-  margin-top: 25px;
-  font-size: clamp(18px, 4vw, 28px);
-}
+#message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
 
 #countdownContainer {
   margin-top: 25px;
-  margin-bottom: 25px; /* space before roles */
+  margin-bottom: 50px; /* extra space after countdown */
   display: none;
   flex-direction: column;
   align-items: center;
@@ -178,21 +181,9 @@ button:hover {
 
 #roles { display: none; }
 
-#polaroids {
-  display: none;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  margin: 30px 0;
-}
+#polaroids { display: none; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 30px 0; }
 
-.polaroid {
-  background: white;
-  padding: 15px 15px 35px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  transform: rotate(-2deg);
-  transition: 0.3s ease;
-}
+.polaroid { background: white; padding: 15px 15px 35px; box-shadow: 0 6px 12px rgba(0,0,0,0.25); transform: rotate(-2deg); transition: 0.3s ease; }
 
 .polaroid img { width: clamp(180px, 22vw, 260px); }
 
@@ -209,11 +200,8 @@ button:hover {
 
 #rolePolaroid.fade-out { opacity: 0; }
 
-#roleResult {
-  font-size: clamp(22px, 5vw, 36px); /* bigger text */
-  opacity: 0; /* will fade in like polaroids */
-  transition: opacity 0.35s ease;
-}
+#roleResult { font-size: clamp(22px, 5vw, 36px); opacity: 0; transition: opacity 0.35s ease; }
+button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 </style>
 </head>
 
@@ -232,7 +220,7 @@ button:hover {
 
 <input type="text" id="nameInput" placeholder="enter your artist's name">
 <br>
-<button onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
+<button class="unlock" onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
 
 <div id="message"></div>
 
@@ -258,16 +246,16 @@ button:hover {
 
 <div id="roles">
   <h2>choose your role</h2>
-  <button onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
-  <button onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
-  <button onclick="selectRole('Backstage Muse')">🎀 Backstage Muse</button>
+  <button class="roleBtn" onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
+  <button class="roleBtn" onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
+  <button class="roleBtn" onclick="selectRole('Backstage Muse')">🎀 Backstage Muse</button>
 </div>
 
 <div id="roleResult"></div>
 <div id="rolePolaroid"></div>
 
 <div id="shareContainer">
-  <button onclick="shareInvite()">✨ share my invitation</button>
+  <button>✨ share my invitation</button>
 </div>
 
 </div>
@@ -283,9 +271,10 @@ function openEnvelope() {
   document.body.style.overflow = "auto";
   window.scrollTo(0,0);
 
-  // Fade in heading, input, and button
-  const fadeElements = [document.getElementById("mainHeading"), document.getElementById("nameInput"), document.querySelector("button")];
-  fadeElements.forEach(el => { el.classList.add("fadeIn"); });
+  // Fade in heading, input, unlock button
+  document.getElementById("mainHeading").classList.add("fadeIn");
+  document.getElementById("nameInput").classList.add("fadeIn");
+  document.querySelector("button.unlock").classList.add("fadeIn");
 }
 
 function showMessage() {
@@ -306,15 +295,17 @@ function showMessage() {
   countdownContainer.style.display = "flex";
   countdownContainer.classList.add("fadeIn");
 
-  document.getElementById("roles").style.display = "block";
+  const roleSection = document.getElementById("roles");
+  roleSection.style.display = "block";
+  roleSection.querySelectorAll("button.roleBtn").forEach(b => b.style.opacity=1);
 
   startCountdown();
 }
 
+// Countdown same as before
 function startCountdown() {
   if(countdownInterval) clearInterval(countdownInterval);
   const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
-
   function updateCountdown() {
     const now = new Date().getTime();
     const distance = eventDate - now;
@@ -323,36 +314,41 @@ function startCountdown() {
     document.getElementById("hoursBox").textContent = Math.floor((distance/(1000*60*60))%24);
     document.getElementById("minutesBox").textContent = Math.floor((distance/1000/60)%60);
   }
-
   updateCountdown();
   countdownInterval = setInterval(updateCountdown,1000);
 }
 
 function selectRole(role) {
   selectedRole = role;
+
   const result = document.getElementById("roleResult");
-  result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
-  result.style.opacity = 0;
-  setTimeout(()=>{ result.style.opacity=1; },50);
+  result.classList.add("fade-out");
+  setTimeout(()=>{
+    result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
+    result.classList.remove("fade-out");
+    result.style.opacity=1;
+  },300);
 
   const container = document.getElementById("rolePolaroid");
-  let imageSrc="",caption="";
-  if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
-  if(role==="VIP Glitter Guest"){ imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg"; caption="front row glamour & sparkle ✧";}
-  if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
-
   container.classList.add("fade-out");
-  setTimeout(()=>{ container.innerHTML=`<div class="polaroid"><img src="${imageSrc}"><p>${caption}</p></div>`; container.classList.remove("fade-out");},300);
+  setTimeout(()=>{
+    let imageSrc="", caption="";
+    if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
+    if(role==="VIP Glitter Guest"){ imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg"; caption="front row glamour & sparkle ✧";}
+    if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
+    container.innerHTML=`<div class="polaroid"><img src="${imageSrc}"><p>${caption}</p></div>`;
+    container.classList.remove("fade-out");
+  },300);
 
   const share = document.getElementById("shareContainer");
   share.classList.add("visible");
 }
 
-function shareInvite() {
+document.querySelector("#shareContainer button").addEventListener("click", ()=>{
   const shareText = "I just got invited to the biggest reveal of the year ✨\n\nRole: "+selectedRole+"\nName on the guest list: "+invitedName+" 💌\n\nReserve your seat too 💖\n"+window.location.href;
-  if(navigator.share){navigator.share({title:"I got invited ✨",text:shareText,url:window.location.href});} 
+  if(navigator.share){navigator.share({title:"I got invited ✨", text:shareText, url:window.location.href});} 
   else { navigator.clipboard.writeText(shareText); alert("Invitation copied to clipboard ✨"); }
-}
+});
 </script>
 
 </body>
