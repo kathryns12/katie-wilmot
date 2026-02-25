@@ -9,7 +9,7 @@
 :root { --vh: 100vh; }
 
 html {
-  scroll-behavior: smooth; /* smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -24,7 +24,6 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Polka dots */
 body.showDots::before {
   content: "";
   position: fixed;
@@ -41,7 +40,6 @@ body.showDots::before {
   to   { background-position: 300px 0px; }
 }
 
-/* Smooth fade utility */
 .fadeIn {
   opacity: 0;
   animation: smoothFade 0.8s ease forwards;
@@ -52,7 +50,6 @@ body.showDots::before {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Envelope */
 #envelopeScreen {
   position: fixed;
   inset: 0;
@@ -76,13 +73,11 @@ body.showDots::before {
   100% { transform: translateY(0); }
 }
 
-/* Layout */
 .container {
   padding: 20px 10%;
 }
 
 @media (min-width: 768px) {
-  /* Optional extra polishing: disable scroll anchoring on desktops */
   .container {
     overflow-anchor: none;
   }
@@ -118,7 +113,6 @@ button:hover {
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
 }
 
-/* Share container (fade & no layout shift) */
 #shareContainer {
   margin-top: 20px;
   min-height: 60px;
@@ -141,9 +135,23 @@ button:hover {
   box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
 }
 
-#message, #countdown {
+#message {
   margin-top: 25px;
   font-size: clamp(18px, 4vw, 28px);
+}
+
+#countdownContainer {
+  margin-top: 25px;
+}
+
+#countdownLabel {
+  font-size: clamp(18px, 4vw, 28px);
+  margin-bottom: 8px;
+}
+
+#countdown {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: bold;
 }
 
 #roles { display: none; }
@@ -172,7 +180,6 @@ button:hover {
   transform: rotate(0deg) scale(1.05);
 }
 
-/* Role container (fade & min-height to prevent scroll jump) */
 #rolePolaroid {
   margin-top: 25px;
   display: flex;
@@ -218,7 +225,11 @@ button:hover {
   </div>
 </div>
 
-<div id="countdown"></div>
+<!-- New countdown container with separate label -->
+<div id="countdownContainer">
+  <div id="countdownLabel">✦ show begins in ✦</div>
+  <div id="countdown"></div>
+</div>
 
 <div id="roles">
   <h2>choose your role</h2>
@@ -245,8 +256,6 @@ function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
   document.body.style.overflow = "auto";
-
-  // Fix initial scroll offset
   window.scrollTo(0, 0);
 }
 
@@ -268,19 +277,16 @@ function showMessage() {
   polaroids.style.display = "flex";
   polaroids.classList.add("fadeIn");
 
-  let countdown = document.getElementById("countdown");
-  countdown.classList.add("fadeIn");
-
   document.getElementById("roles").style.display = "block";
 
   startCountdown();
 }
 
-// Countdown using Argentina time placeholder
+// Countdown using numeric-only values
 function startCountdown() {
   if (countdownInterval) clearInterval(countdownInterval);
 
-  // Argentina is UTC-3, so 00:00:00 March 20, 2026 corresponds to 03:00:00 UTC
+  // Argentina placeholder: March 20, 2026, 00:00:00 (UTC-3 → UTC+0 = 03:00)
   const eventDate = new Date(Date.UTC(2026, 2, 20, 3, 0, 0)).getTime();
   const countdownEl = document.getElementById("countdown");
 
@@ -290,7 +296,7 @@ function startCountdown() {
 
     if(distance <= 0) {
       clearInterval(countdownInterval);
-      countdownEl.innerHTML = "✦ the show has begun ✦";
+      countdownEl.innerHTML = "0d 0h 0m";
       return;
     }
 
@@ -298,8 +304,8 @@ function startCountdown() {
     const hours = Math.floor((distance / (1000*60*60)) % 24);
     const minutes = Math.floor((distance / 1000 / 60) % 60);
 
-    countdownEl.innerHTML =
-      "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
+    // Only numeric values here
+    countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m`;
   }
 
   updateCountdown();
