@@ -245,6 +245,8 @@ function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
   document.body.style.overflow = "auto";
+
+  // Fix initial scroll offset
   window.scrollTo(0, 0);
 }
 
@@ -274,10 +276,12 @@ function showMessage() {
   startCountdown();
 }
 
+// Countdown using Argentina time placeholder
 function startCountdown() {
   if (countdownInterval) clearInterval(countdownInterval);
 
-  const eventDate = new Date("March 20, 2026 18:00:00").getTime();
+  // Argentina is UTC-3, so 00:00:00 March 20, 2026 corresponds to 03:00:00 UTC
+  const eventDate = new Date(Date.UTC(2026, 2, 20, 3, 0, 0)).getTime();
   const countdownEl = document.getElementById("countdown");
 
   function updateCountdown() {
