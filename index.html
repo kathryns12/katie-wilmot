@@ -107,18 +107,6 @@ button:hover {
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
 }
 
-#shareContainer button {
-  margin-top: 20px;
-  background: #8c0f14;
-  color: white;
-  border: none;
-}
-
-#shareContainer button:hover {
-  background: #b81d24;
-  box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
-}
-
 #message, #countdown {
   margin-top: 25px;
   font-size: clamp(18px, 4vw, 28px);
@@ -150,11 +138,12 @@ button:hover {
   transform: rotate(0deg) scale(1.05);
 }
 
+/* Role container (prevents scroll jump) */
 #rolePolaroid {
   margin-top: 25px;
   display: flex;
   justify-content: center;
-  min-height: 320px; /* prevents scroll jump */
+  min-height: 320px;
   opacity: 1;
   transition: opacity 0.35s ease;
 }
@@ -163,6 +152,28 @@ button:hover {
   opacity: 0;
 }
 
+/* Share container (no layout shift) */
+#shareContainer {
+  margin-top: 20px;
+  min-height: 60px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#shareContainer.visible {
+  opacity: 1;
+}
+
+#shareContainer button {
+  background: #8c0f14;
+  color: white;
+  border: none;
+}
+
+#shareContainer button:hover {
+  background: #b81d24;
+  box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
+}
 </style>
 </head>
 
@@ -208,7 +219,7 @@ button:hover {
 <div id="roleResult"></div>
 <div id="rolePolaroid"></div>
 
-<div id="shareContainer" style="display:none;">
+<div id="shareContainer">
   <button onclick="shareInvite()">✨ share my invitation</button>
 </div>
 
@@ -252,9 +263,7 @@ function showMessage() {
 }
 
 function startCountdown() {
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-  }
+  if (countdownInterval) clearInterval(countdownInterval);
 
   const eventDate = new Date("March 20, 2026 18:00:00").getTime();
   const countdownEl = document.getElementById("countdown");
@@ -307,7 +316,6 @@ function selectRole(role) {
     caption = "behind the curtain magic ✴︎";
   }
 
-  // Fade out
   container.classList.add("fade-out");
 
   setTimeout(() => {
@@ -317,12 +325,10 @@ function selectRole(role) {
         <p>${caption}</p>
       </div>
     `;
-
-    // Fade back in
     container.classList.remove("fade-out");
   }, 300);
 
-  document.getElementById("shareContainer").style.display = "block";
+  document.getElementById("shareContainer").classList.add("visible");
 }
 
 function shareInvite() {
