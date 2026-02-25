@@ -44,7 +44,9 @@ body.showDots::before {
 
 @keyframes floatBounce {
   0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-10px); }
+  30%  { transform: translateY(-14px); }
+  50%  { transform: translateY(-18px); }
+  70%  { transform: translateY(-14px); }
   100% { transform: translateY(0px); }
 }
 
@@ -74,7 +76,7 @@ body.showDots::before {
   width: clamp(190px, 42vw, 320px);
   height: auto;
   display: block;
-  animation: floatBounce 3s ease-in-out infinite;
+  animation: floatBounce 2.2s ease-in-out infinite;
 }
 
 #envelopeScreen p {
