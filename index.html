@@ -22,7 +22,7 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Hide dots by default */
+/* Polka dots (hidden until envelope opens) */
 body.showDots::before {
   content: "";
   position: fixed;
@@ -34,20 +34,13 @@ body.showDots::before {
   background-size: 30px 30px;
   opacity: 0.25;
   z-index: -1;
-  animation: moveDots 40s linear infinite;
+  animation: moveDots 35s linear infinite;
 }
 
+/* Choose direction: sideways */
 @keyframes moveDots {
-  from { background-position: 0px 100vh; }
-  to   { background-position: 200px 0px; }
-}
-
-@keyframes floatBounce {
-  0%   { transform: translateY(0px); }
-  30%  { transform: translateY(-14px); }
-  50%  { transform: translateY(-18px); }
-  70%  { transform: translateY(-14px); }
-  100% { transform: translateY(0px); }
+  from { background-position: 0px 0px; }
+  to   { background-position: 300px 0px; }
 }
 
 /* Envelope screen */
@@ -67,16 +60,19 @@ body.showDots::before {
   cursor: pointer;
 }
 
-.envelope-container:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
 .envelope-img {
   width: clamp(190px, 42vw, 320px);
   height: auto;
   display: block;
   animation: floatBounce 2.2s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+  0%   { transform: translateY(0px); }
+  30%  { transform: translateY(-14px); }
+  50%  { transform: translateY(-18px); }
+  70%  { transform: translateY(-14px); }
+  100% { transform: translateY(0px); }
 }
 
 #envelopeScreen p {
@@ -135,6 +131,7 @@ button:hover {
 #message {
   margin-top: 30px;
   font-size: clamp(18px, 4vw, 28px);
+  line-height: 1.3;
 }
 
 #countdown {
@@ -155,6 +152,42 @@ button:hover {
   margin: 8px;
 }
 
+/* Polaroids */
+#polaroids {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.polaroid {
+  background: white;
+  padding: 10px 10px 25px 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border: 2px solid #fff;
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease;
+}
+
+.polaroid img {
+  width: 150px;
+  height: auto;
+  display: block;
+}
+
+.polaroid p {
+  text-align: center;
+  font-size: clamp(12px, 2.5vw, 16px);
+  margin-top: 8px;
+  color: #8c0f14;
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* Responsive tweaks */
 @media (max-width: 400px) {
   input { width: 90%; }
 }
@@ -180,6 +213,19 @@ button:hover {
   <button onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
 
   <div id="message"></div>
+
+  <!-- Polaroids appear here -->
+  <div id="polaroids">
+    <div class="polaroid">
+      <img src="POLAROID-IMAGE-1-URL" alt="Polaroid 1">
+      <p>Caption 1</p>
+    </div>
+    <div class="polaroid">
+      <img src="POLAROID-IMAGE-2-URL" alt="Polaroid 2">
+      <p>Caption 2</p>
+    </div>
+  </div>
+
   <div id="countdown"></div>
 
   <div id="roles">
@@ -192,11 +238,13 @@ button:hover {
   <div id="roleResult"></div>
 </div>
 
+<!-- Music -->
 <audio id="bgMusic" loop>
   <source src="YOUR-MP3-LINK-HERE.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+// Mobile viewport fix
 function setVh() {
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh*100}px`);
@@ -204,23 +252,30 @@ function setVh() {
 window.addEventListener('resize', setVh);
 setVh();
 
+// Envelope click
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
-  document.body.style.overflow = "auto";
+  fadeInMusic();
 }
 
+// Personalized message
 function showMessage() {
   var name = document.getElementById("nameInput").value;
-  if(name.trim() === "") {
-    alert("Enter your name, superstar 𖹭.ᐟ");
-    return;
+  if(name.trim() === "") { 
+    alert("Enter your name, superstar 𖹭.ᐟ"); 
+    return; 
   }
   document.getElementById("message").innerHTML =
     "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
+
   document.getElementById("roles").style.display = "block";
+
+  // Show polaroids
+  document.getElementById("polaroids").style.display = "flex";
 }
 
+// Countdown
 const eventDate = new Date("March 20, 2026 18:00:00").getTime();
 setInterval(function() {
   const now = new Date().getTime();
@@ -232,9 +287,34 @@ setInterval(function() {
     "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
 }, 1000);
 
+// Role selection
 function selectRole(role) {
   document.getElementById("roleResult").innerHTML =
     "✴︎ you are officially our " + role + "! ✴︎";
+}
+
+// Glitter mouse trail
+document.addEventListener("mousemove", function(e) {
+  const sparkle = document.createElement("div");
+  sparkle.innerHTML = "✨";
+  sparkle.style.position = "absolute";
+  sparkle.style.left = e.pageX + "px";
+  sparkle.style.top = e.pageY + "px";
+  sparkle.style.pointerEvents = "none";
+  sparkle.style.fontSize = "12px";
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 500);
+});
+
+// Fade-in music
+function fadeInMusic() {
+  const music = document.getElementById("bgMusic");
+  music.volume = 0;
+  music.play();
+  let fade = setInterval(() => {
+    if(music.volume < 0.5) music.volume += 0.02;
+    else clearInterval(fade);
+  }, 200);
 }
 </script>
 
