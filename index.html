@@ -20,7 +20,7 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Fade utility */
+/* Smooth fade utility */
 .fadeIn {
   opacity: 0;
   animation: smoothFade 0.8s ease forwards;
@@ -29,20 +29,6 @@ body {
 @keyframes smoothFade {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* ✨ NEW Smooth Slide Up Animation */
-.slideInUp {
-  opacity: 0;
-  transform: translateY(40px);
-  animation: slideUp 1s cubic-bezier(.22,1,.36,1) forwards;
-}
-
-@keyframes slideUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Polka dots */
@@ -87,7 +73,10 @@ body.showDots::before {
 }
 
 /* Layout */
-.container { padding: 20px 10%; }
+.container {
+  padding: 20px 10%;
+}
+
 h1 { font-size: clamp(36px, 8vw, 60px); }
 
 input {
@@ -112,12 +101,14 @@ button {
   transition: 0.3s ease;
 }
 
+/* ✨ Glow on hover */
 button:hover {
   background: #ffe6e9;
   transform: scale(1.08);
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
 }
 
+/* Special share button style */
 #shareContainer button {
   margin-top: 20px;
   background: #8c0f14;
@@ -137,6 +128,7 @@ button:hover {
 
 #roles { display: none; }
 
+/* Polaroids */
 #polaroids {
   display: none;
   flex-wrap: wrap;
@@ -226,6 +218,7 @@ function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
   document.body.style.overflow = "auto";
+  startCountdown();
 }
 
 function showMessage() {
@@ -246,20 +239,13 @@ function showMessage() {
   polaroids.style.display = "flex";
   polaroids.classList.add("fadeIn");
 
-  document.getElementById("roles").style.display = "block";
+  let countdown = document.getElementById("countdown");
+  countdown.classList.add("fadeIn");
 
-  startCountdown();
+  document.getElementById("roles").style.display = "block";
 }
 
 function startCountdown() {
-
-  if (countdownInterval) clearInterval(countdownInterval);
-
-  const countdownEl = document.getElementById("countdown");
-  countdownEl.classList.remove("slideInUp"); 
-  void countdownEl.offsetWidth; 
-  countdownEl.classList.add("slideInUp");
-
   const eventDate = new Date("March 20, 2026 18:00:00").getTime();
 
   countdownInterval = setInterval(function() {
@@ -268,7 +254,8 @@ function startCountdown() {
 
     if(distance <= 0) {
       clearInterval(countdownInterval);
-      countdownEl.innerHTML = "✦ the show has begun ✦";
+      document.getElementById("countdown").innerHTML =
+        "✦ the show has begun ✦";
       return;
     }
 
@@ -276,12 +263,66 @@ function startCountdown() {
     const hours = Math.floor((distance / (1000*60*60)) % 24);
     const minutes = Math.floor((distance / 1000 / 60) % 60);
 
-    countdownEl.innerHTML =
+    document.getElementById("countdown").innerHTML =
       "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
   }, 1000);
 }
 
-/* rest of JS unchanged */
+function selectRole(role) {
+  selectedRole = role;
+
+  document.getElementById("roleResult").innerHTML =
+    "✴︎ you are officially our " + role + "! ✴︎";
+
+  const container = document.getElementById("rolePolaroid");
+
+  let imageSrc = "";
+  let caption = "";
+
+  if(role === "Pop Star Icon") {
+    imageSrc = "https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
+    caption = "center stage, spotlight on you ✦";
+  }
+
+  if(role === "VIP Glitter Guest") {
+    imageSrc = "https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
+    caption = "front row glamour & sparkle ✧";
+  }
+
+  if(role === "Backstage Muse") {
+    imageSrc = "https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
+    caption = "behind the curtain magic ✴︎";
+  }
+
+  container.innerHTML = `
+    <div class="polaroid fadeIn">
+      <img src="${imageSrc}">
+      <p>${caption}</p>
+    </div>
+  `;
+
+  document.getElementById("shareContainer").style.display = "block";
+}
+
+function shareInvite() {
+  const shareText =
+    "I just got invited to the biggest reveal of the year ✨\n\n" +
+    "Role: " + selectedRole + "\n" +
+    "Name on the guest list: " + invitedName + " 💌\n\n" +
+    "Reserve your seat too 💖\n" +
+    window.location.href;
+
+  if (navigator.share) {
+    navigator.share({
+      title: "I got invited ✨",
+      text: shareText,
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(shareText);
+    alert("Invitation copied to clipboard ✨");
+  }
+}
 </script>
 
 </body>
