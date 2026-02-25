@@ -20,14 +20,22 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
+/* Smooth fade utility */
+.fadeIn {
+  opacity: 0;
+  animation: smoothFade 0.8s ease forwards;
+}
+
+@keyframes smoothFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Polka dots */
 body.showDots::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background-image: radial-gradient(#8c0f14 2px, transparent 2px);
   background-size: 30px 30px;
   opacity: 0.25;
@@ -40,7 +48,7 @@ body.showDots::before {
   to   { background-position: 300px 0px; }
 }
 
-/* Envelope screen */
+/* Envelope */
 #envelopeScreen {
   position: fixed;
   inset: 0;
@@ -50,32 +58,23 @@ body.showDots::before {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 20px;
 }
-
-.envelope-container { cursor: pointer; }
 
 .envelope-img {
   width: clamp(190px, 42vw, 320px);
   animation: floatBounce 2.2s ease-in-out infinite;
+  cursor: pointer;
 }
 
 @keyframes floatBounce {
-  0% { transform: translateY(0px); }
+  0% { transform: translateY(0); }
   50% { transform: translateY(-18px); }
-  100% { transform: translateY(0px); }
+  100% { transform: translateY(0); }
 }
 
-/* Main content */
+/* Layout */
 .container {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px 10%;
-  box-sizing: border-box;
-  width: 100%;
 }
 
 h1 { font-size: clamp(36px, 8vw, 60px); }
@@ -83,16 +82,15 @@ h1 { font-size: clamp(36px, 8vw, 60px); }
 input {
   width: 80%;
   max-width: 300px;
-  padding: clamp(10px, 1.5vw, 14px);
+  padding: 12px;
   border-radius: 30px;
   border: none;
   text-align: center;
-  font-size: clamp(14px, 2.5vw, 18px);
   margin-top: 20px;
 }
 
 button {
-  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 25px);
+  padding: 10px 20px;
   border-radius: 30px;
   border: 1px solid #8c0f14;
   background: white;
@@ -101,17 +99,23 @@ button {
   margin: 10px;
   cursor: pointer;
   transition: 0.3s ease;
-  font-size: clamp(14px, 2.5vw, 18px);
 }
 
-button:hover { background: #ffe6e9; transform: scale(1.08); }
+/* ✨ Glow on hover */
+button:hover {
+  background: #ffe6e9;
+  transform: scale(1.08);
+  box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
+}
 
-#message { margin-top: 30px; font-size: clamp(18px, 4vw, 28px); }
-#countdown { margin-top: 20px; font-size: clamp(14px, 3vw, 20px); }
+#message, #countdown {
+  margin-top: 25px;
+  font-size: clamp(18px, 4vw, 28px);
+}
 
 #roles { display: none; }
 
-/* Polaroids (BIGGER but same structure) */
+/* Polaroids */
 #polaroids {
   display: none;
   flex-wrap: wrap;
@@ -122,41 +126,24 @@ button:hover { background: #ffe6e9; transform: scale(1.08); }
 
 .polaroid {
   background: white;
-  padding: 15px 15px 35px 15px;
+  padding: 15px 15px 35px;
   box-shadow: 0 6px 12px rgba(0,0,0,0.25);
   transform: rotate(-2deg);
-  transition: transform 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .polaroid img {
   width: clamp(180px, 22vw, 260px);
-  height: auto;
-  display: block;
 }
 
-.polaroid p {
-  text-align: center;
-  font-size: clamp(14px, 2.5vw, 18px);
-  margin-top: 10px;
-  color: #8c0f14;
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
 }
 
-.polaroid:hover { transform: rotate(0deg) scale(1.05); }
-
-/* Role-based extra polaroid */
 #rolePolaroid {
   margin-top: 25px;
   display: flex;
   justify-content: center;
-}
-
-.fadeIn {
-  animation: fadeInPolaroid 0.6s ease;
-}
-
-@keyframes fadeInPolaroid {
-  from { opacity: 0; transform: translateY(10px) rotate(-2deg); }
-  to   { opacity: 1; transform: translateY(0px) rotate(-2deg); }
 }
 </style>
 </head>
@@ -164,65 +151,100 @@ button:hover { background: #ffe6e9; transform: scale(1.08); }
 <body>
 
 <div id="envelopeScreen">
-  <div class="envelope-container" onclick="openEnvelope()">
-    <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b" class="envelope-img">
-  </div>
+  <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b"
+       class="envelope-img"
+       onclick="openEnvelope()">
   <p>click to save the date !</p>
 </div>
 
 <div class="container">
-  <h1>reserve a seat for a surprise ꩜</h1>
 
-  <input type="text" id="nameInput" placeholder="enter your artist's name">
-  <br>
-  <button onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
+<h1>reserve a seat for a surprise ꩜</h1>
 
-  <div id="message"></div>
+<input type="text" id="nameInput" placeholder="enter your artist's name">
+<br>
+<button onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
 
-  <!-- YOUR ORIGINAL TWO POLAROIDS (unchanged except size) -->
-  <div id="polaroids">
-    <div class="polaroid">
-      <img src="https://i.pinimg.com/736x/df/28/17/df28172dfba76a6d276e8003a8184866.jpg">
-      <p>pictures in frames...</p>
-    </div>
-    <div class="polaroid">
-      <img src="https://i.pinimg.com/736x/73/12/94/731294529c6af00dba89ef03e53a8b8e.jpg">
-      <p>... of kisses on cheeks</p>
-    </div>
+<div id="message"></div>
+
+<div id="polaroids">
+  <div class="polaroid">
+    <img src="https://i.pinimg.com/736x/df/28/17/df28172dfba76a6d276e8003a8184866.jpg">
+    <p>pictures in frames...</p>
   </div>
-
-  <div id="countdown"></div>
-
-  <div id="roles">
-    <h2>choose your role</h2>
-    <button onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
-    <button onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
-    <button onclick="selectRole('Backstage Muse')">🎀 Backstage Muse</button>
+  <div class="polaroid">
+    <img src="https://i.pinimg.com/736x/73/12/94/731294529c6af00dba89ef03e53a8b8e.jpg">
+    <p>... of kisses on cheeks</p>
   </div>
+</div>
 
-  <div id="roleResult"></div>
-  <div id="rolePolaroid"></div>
+<div id="countdown"></div>
+
+<div id="roles">
+  <h2>choose your role</h2>
+  <button onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
+  <button onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
+  <button onclick="selectRole('Backstage Muse')">🎀 Backstage Muse</button>
+</div>
+
+<div id="roleResult"></div>
+<div id="rolePolaroid"></div>
+
 </div>
 
 <script>
+let countdownInterval;
+
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
   document.body.style.overflow = "auto";
+  startCountdown();
 }
 
 function showMessage() {
-  var name = document.getElementById("nameInput").value;
+  let name = document.getElementById("nameInput").value;
   if(name.trim() === "") {
     alert("Enter your name, superstar 𖹭.ᐟ");
     return;
   }
 
-  document.getElementById("message").innerHTML =
+  let message = document.getElementById("message");
+  message.innerHTML =
     "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
+  message.classList.add("fadeIn");
+
+  let polaroids = document.getElementById("polaroids");
+  polaroids.style.display = "flex";
+  polaroids.classList.add("fadeIn");
+
+  let countdown = document.getElementById("countdown");
+  countdown.classList.add("fadeIn");
 
   document.getElementById("roles").style.display = "block";
-  document.getElementById("polaroids").style.display = "flex";
+}
+
+function startCountdown() {
+  const eventDate = new Date("March 20, 2026 18:00:00").getTime();
+
+  countdownInterval = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = eventDate - now;
+
+    if(distance <= 0) {
+      clearInterval(countdownInterval);
+      document.getElementById("countdown").innerHTML =
+        "✦ the show has begun ✦";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000*60*60*24));
+    const hours = Math.floor((distance / (1000*60*60)) % 24);
+    const minutes = Math.floor((distance / 1000 / 60) % 60);
+
+    document.getElementById("countdown").innerHTML =
+      "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
+  }, 1000);
 }
 
 function selectRole(role) {
