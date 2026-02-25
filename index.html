@@ -108,6 +108,19 @@ button:hover {
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
 }
 
+/* Special share button style */
+#shareContainer button {
+  margin-top: 20px;
+  background: #8c0f14;
+  color: white;
+  border: none;
+}
+
+#shareContainer button:hover {
+  background: #b81d24;
+  box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
+}
+
 #message, #countdown {
   margin-top: 25px;
   font-size: clamp(18px, 4vw, 28px);
@@ -190,10 +203,16 @@ button:hover {
 <div id="roleResult"></div>
 <div id="rolePolaroid"></div>
 
+<div id="shareContainer" style="display:none;">
+  <button onclick="shareInvite()">✨ share my invitation</button>
+</div>
+
 </div>
 
 <script>
 let countdownInterval;
+let selectedRole = "";
+let invitedName = "";
 
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
@@ -208,6 +227,8 @@ function showMessage() {
     alert("Enter your name, superstar 𖹭.ᐟ");
     return;
   }
+
+  invitedName = name;
 
   let message = document.getElementById("message");
   message.innerHTML =
@@ -248,6 +269,8 @@ function startCountdown() {
 }
 
 function selectRole(role) {
+  selectedRole = role;
+
   document.getElementById("roleResult").innerHTML =
     "✴︎ you are officially our " + role + "! ✴︎";
 
@@ -277,6 +300,28 @@ function selectRole(role) {
       <p>${caption}</p>
     </div>
   `;
+
+  document.getElementById("shareContainer").style.display = "block";
+}
+
+function shareInvite() {
+  const shareText =
+    "I just got invited to the biggest reveal of the year ✨\n\n" +
+    "Role: " + selectedRole + "\n" +
+    "Name on the guest list: " + invitedName + " 💌\n\n" +
+    "Reserve your seat too 💖\n" +
+    window.location.href;
+
+  if (navigator.share) {
+    navigator.share({
+      title: "I got invited ✨",
+      text: shareText,
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(shareText);
+    alert("Invitation copied to clipboard ✨");
+  }
 }
 </script>
 
