@@ -101,14 +101,12 @@ button {
   transition: 0.3s ease;
 }
 
-/* ✨ Glow on hover */
 button:hover {
   background: #ffe6e9;
   transform: scale(1.08);
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
 }
 
-/* Special share button style */
 #shareContainer button {
   margin-top: 20px;
   background: #8c0f14;
@@ -128,7 +126,6 @@ button:hover {
 
 #roles { display: none; }
 
-/* Polaroids */
 #polaroids {
   display: none;
   flex-wrap: wrap;
@@ -218,7 +215,6 @@ function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
   document.body.style.overflow = "auto";
-  startCountdown();
 }
 
 function showMessage() {
@@ -243,9 +239,16 @@ function showMessage() {
   countdown.classList.add("fadeIn");
 
   document.getElementById("roles").style.display = "block";
+
+  startCountdown(); // ✨ moved here
 }
 
 function startCountdown() {
+
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+  }
+
   const eventDate = new Date("March 20, 2026 18:00:00").getTime();
 
   countdownInterval = setInterval(function() {
