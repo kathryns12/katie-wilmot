@@ -140,18 +140,39 @@ button:hover {
   font-size: clamp(18px, 4vw, 28px);
 }
 
+/* Countdown container */
 #countdownContainer {
   margin-top: 25px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#countdownContainer.fadeIn {
+  display: flex;
+  animation: smoothFade 0.8s ease forwards;
 }
 
 #countdownLabel {
   font-size: clamp(18px, 4vw, 28px);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-#countdown {
-  font-size: clamp(20px, 4vw, 28px);
+#countdownBoxes {
+  display: flex;
+  gap: 15px;
+}
+
+.countdownBox {
+  background: #ffe6e9;
+  color: #8c0f14;
+  padding: 12px 18px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   font-weight: bold;
+  min-width: 50px;
+  text-align: center;
+  font-size: clamp(18px, 4vw, 28px);
 }
 
 #roles { display: none; }
@@ -225,10 +246,14 @@ button:hover {
   </div>
 </div>
 
-<!-- New countdown container with separate label -->
+<!-- Countdown container -->
 <div id="countdownContainer">
   <div id="countdownLabel">✦ show begins in ✦</div>
-  <div id="countdown"></div>
+  <div id="countdownBoxes">
+    <div class="countdownBox" id="daysBox">0</div>
+    <div class="countdownBox" id="hoursBox">0</div>
+    <div class="countdownBox" id="minutesBox">0</div>
+  </div>
 </div>
 
 <div id="roles">
@@ -277,18 +302,22 @@ function showMessage() {
   polaroids.style.display = "flex";
   polaroids.classList.add("fadeIn");
 
+  // Show countdown container with fade
+  const countdownContainer = document.getElementById("countdownContainer");
+  countdownContainer.style.display = "flex";
+  countdownContainer.classList.add("fadeIn");
+
   document.getElementById("roles").style.display = "block";
 
   startCountdown();
 }
 
-// Countdown using numeric-only values
+// Countdown numeric-only, in boxes
 function startCountdown() {
   if (countdownInterval) clearInterval(countdownInterval);
 
   // Argentina placeholder: March 20, 2026, 00:00:00 (UTC-3 → UTC+0 = 03:00)
   const eventDate = new Date(Date.UTC(2026, 2, 20, 3, 0, 0)).getTime();
-  const countdownEl = document.getElementById("countdown");
 
   function updateCountdown() {
     const now = new Date().getTime();
@@ -296,7 +325,9 @@ function startCountdown() {
 
     if(distance <= 0) {
       clearInterval(countdownInterval);
-      countdownEl.innerHTML = "0d 0h 0m";
+      document.getElementById("daysBox").textContent = "0";
+      document.getElementById("hoursBox").textContent = "0";
+      document.getElementById("minutesBox").textContent = "0";
       return;
     }
 
@@ -304,8 +335,9 @@ function startCountdown() {
     const hours = Math.floor((distance / (1000*60*60)) % 24);
     const minutes = Math.floor((distance / 1000 / 60) % 60);
 
-    // Only numeric values here
-    countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m`;
+    document.getElementById("daysBox").textContent = days;
+    document.getElementById("hoursBox").textContent = hours;
+    document.getElementById("minutesBox").textContent = minutes;
   }
 
   updateCountdown();
