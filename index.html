@@ -150,22 +150,19 @@ button:hover {
   transform: rotate(0deg) scale(1.05);
 }
 
-/* ✨ Scroll fix + smooth role fade */
 #rolePolaroid {
   margin-top: 25px;
   display: flex;
   justify-content: center;
   min-height: 320px; /* prevents scroll jump */
-  transition: opacity 0.3s ease;
+  opacity: 1;
+  transition: opacity 0.35s ease;
 }
 
-.roleFadeOut {
+#rolePolaroid.fade-out {
   opacity: 0;
 }
 
-.roleFadeIn {
-  opacity: 1;
-}
 </style>
 </head>
 
@@ -310,7 +307,8 @@ function selectRole(role) {
     caption = "behind the curtain magic ✴︎";
   }
 
-  container.classList.add("roleFadeOut");
+  // Fade out
+  container.classList.add("fade-out");
 
   setTimeout(() => {
     container.innerHTML = `
@@ -319,9 +317,10 @@ function selectRole(role) {
         <p>${caption}</p>
       </div>
     `;
-    container.classList.remove("roleFadeOut");
-    container.classList.add("roleFadeIn");
-  }, 200);
+
+    // Fade back in
+    container.classList.remove("fade-out");
+  }, 300);
 
   document.getElementById("shareContainer").style.display = "block";
 }
