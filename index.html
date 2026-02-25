@@ -240,7 +240,7 @@ function showMessage() {
 
   document.getElementById("roles").style.display = "block";
 
-  startCountdown(); // ✨ moved here
+  startCountdown();
 }
 
 function startCountdown() {
@@ -250,15 +250,15 @@ function startCountdown() {
   }
 
   const eventDate = new Date("March 20, 2026 18:00:00").getTime();
+  const countdownEl = document.getElementById("countdown");
 
-  countdownInterval = setInterval(function() {
+  function updateCountdown() {
     const now = new Date().getTime();
     const distance = eventDate - now;
 
     if(distance <= 0) {
       clearInterval(countdownInterval);
-      document.getElementById("countdown").innerHTML =
-        "✦ the show has begun ✦";
+      countdownEl.innerHTML = "✦ the show has begun ✦";
       return;
     }
 
@@ -266,9 +266,12 @@ function startCountdown() {
     const hours = Math.floor((distance / (1000*60*60)) % 24);
     const minutes = Math.floor((distance / 1000 / 60) % 60);
 
-    document.getElementById("countdown").innerHTML =
+    countdownEl.innerHTML =
       "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
-  }, 1000);
+  }
+
+  updateCountdown(); // ✨ shows immediately
+  countdownInterval = setInterval(updateCountdown, 1000);
 }
 
 function selectRole(role) {
