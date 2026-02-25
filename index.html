@@ -22,22 +22,8 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Polka dot background 
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: radial-gradient(#8c0f14 2px, transparent 2px);
-  background-size: 30px 30px;
-  opacity: 0.25;
-  z-index: -1;
-  animation: moveDots 20s linear infinite;
-} */
-
-.container::before {
+/* Hide dots by default */
+body.showDots::before {
   content: "";
   position: fixed;
   top: 0;
@@ -56,53 +42,35 @@ body::before {
   to { background-position: 200px 200px; }
 }
 
-/* Envelope */
+/* Envelope screen */
 #envelopeScreen {
   position: fixed;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-color: #FFDBDC;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1000;
   padding: 20px;
+}
+
+.envelope-container {
+  cursor: pointer;
+}
+
+.envelope-img {
+  width: clamp(150px, 35vw, 260px);
+  height: auto;
+  display: block;
 }
 
 #envelopeScreen p {
   font-size: clamp(14px, 4vw, 18px);
   margin-top: 20px;
-  color: #8c0f14;
-  z-index: 1000;
 }
 
-.envelope-container {
-  font-size: clamp(100px, 25vw, 200px);
-  cursor: pointer;
-  animation: pulse 2s infinite;
-}
-
-.envelope-img {
-  width: clamp(140px, 30vw, 260px);
-  height: auto;
-  max-height: 50vh;
-  display: block;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
-}
-
-#envelopeScreen p {
-  font-size: clamp(14px, 4vw, 18px);
-  margin-top: 15px;
-  color: #8c0f14;
-}
-
-/* Main container */
+/* Main content */
 .container {
   position: relative;
   z-index: 1;
@@ -152,12 +120,15 @@ button:hover {
 #message {
   margin-top: 30px;
   font-size: clamp(18px, 4vw, 28px);
-  line-height: 1.3;
 }
 
 #countdown {
   margin-top: 20px;
   font-size: clamp(14px, 3vw, 20px);
+}
+
+#roles {
+  display: none;
 }
 
 #roles h2 {
@@ -167,26 +138,10 @@ button:hover {
 
 #roles button {
   margin: 8px;
-  font-size: clamp(14px,2.5vw,18px);
-  padding: clamp(8px,1.5vw,12px) clamp(12px,2vw,20px);
-  border-radius:30px;
-  border:1px solid #8c0f14;
-  background:white;
-  color:#8c0f14;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s ease;
 }
 
-#roles button:hover { 
-  background:#ffe6e9; 
-  transform:scale(1.08); 
-}
-
-/* Responsive tweaks for small screens */
 @media (max-width: 400px) {
   input { width: 90%; }
-  .envelope-container { font-size: 120px; }
 }
 </style>
 </head>
@@ -197,7 +152,7 @@ button:hover {
 <div id="envelopeScreen">
   <div class="envelope-container" onclick="openEnvelope()">
     <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b" alt="Envelope" class="envelope-img">
-</div></div>
+  </div>
   <p>click to save the date !</p>
 </div>
 
@@ -207,12 +162,12 @@ button:hover {
 
   <input type="text" id="nameInput" placeholder="enter your artist's name">
   <br>
-  <button onclick="showMessage()">nlock my invitation 𖹭.ᐟ</button>
+  <button onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
 
   <div id="message"></div>
   <div id="countdown"></div>
 
-  <div id="roles" style="display:none;">
+  <div id="roles">
     <h2>choose your role</h2>
     <button onclick="selectRole('Pop Star Icon')">🎤 Pop Star Icon</button>
     <button onclick="selectRole('VIP Glitter Guest')">💎 VIP Glitter Guest</button>
@@ -222,13 +177,11 @@ button:hover {
   <div id="roleResult"></div>
 </div>
 
-<!-- Music -->
 <audio id="bgMusic" loop>
   <source src="YOUR-MP3-LINK-HERE.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// Mobile viewport fix
 function setVh() {
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh*100}px`);
@@ -236,22 +189,23 @@ function setVh() {
 window.addEventListener('resize', setVh);
 setVh();
 
-// Envelope click
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
-  fadeInMusic();
+  document.body.classList.add("showDots");
+  document.body.style.overflow = "auto";
 }
 
-// Personalized message
 function showMessage() {
   var name = document.getElementById("nameInput").value;
-  if(name.trim() === "") { alert("Enter your name, superstar 𖹭.ᐟ"); return; }
+  if(name.trim() === "") {
+    alert("Enter your name, superstar 𖹭.ᐟ");
+    return;
+  }
   document.getElementById("message").innerHTML =
     "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
   document.getElementById("roles").style.display = "block";
 }
 
-// Countdown
 const eventDate = new Date("March 20, 2026 18:00:00").getTime();
 setInterval(function() {
   const now = new Date().getTime();
@@ -263,34 +217,9 @@ setInterval(function() {
     "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
 }, 1000);
 
-// Role selection
 function selectRole(role) {
   document.getElementById("roleResult").innerHTML =
     "✴︎ you are officially our " + role + "! ✴︎";
-}
-
-// Glitter mouse trail
-document.addEventListener("mousemove", function(e) {
-  const sparkle = document.createElement("div");
-  sparkle.innerHTML = "✨";
-  sparkle.style.position = "absolute";
-  sparkle.style.left = e.pageX + "px";
-  sparkle.style.top = e.pageY + "px";
-  sparkle.style.pointerEvents = "none";
-  sparkle.style.fontSize = "12px";
-  document.body.appendChild(sparkle);
-  setTimeout(() => sparkle.remove(), 500);
-});
-
-// Fade-in music
-function fadeInMusic() {
-  const music = document.getElementById("bgMusic");
-  music.volume = 0;
-  music.play();
-  let fade = setInterval(() => {
-    if(music.volume < 0.5) music.volume += 0.02;
-    else clearInterval(fade);
-  }, 200);
 }
 </script>
 
