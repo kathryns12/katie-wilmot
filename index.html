@@ -150,10 +150,21 @@ button:hover {
   transform: rotate(0deg) scale(1.05);
 }
 
+/* ✨ Scroll fix + smooth role fade */
 #rolePolaroid {
   margin-top: 25px;
   display: flex;
   justify-content: center;
+  min-height: 320px; /* prevents scroll jump */
+  transition: opacity 0.3s ease;
+}
+
+.roleFadeOut {
+  opacity: 0;
+}
+
+.roleFadeIn {
+  opacity: 1;
 }
 </style>
 </head>
@@ -244,7 +255,6 @@ function showMessage() {
 }
 
 function startCountdown() {
-
   if (countdownInterval) {
     clearInterval(countdownInterval);
   }
@@ -270,7 +280,7 @@ function startCountdown() {
       "✦ show begins in " + days + "d " + hours + "h " + minutes + "m";
   }
 
-  updateCountdown(); // ✨ shows immediately
+  updateCountdown();
   countdownInterval = setInterval(updateCountdown, 1000);
 }
 
@@ -300,12 +310,18 @@ function selectRole(role) {
     caption = "behind the curtain magic ✴︎";
   }
 
-  container.innerHTML = `
-    <div class="polaroid fadeIn">
-      <img src="${imageSrc}">
-      <p>${caption}</p>
-    </div>
-  `;
+  container.classList.add("roleFadeOut");
+
+  setTimeout(() => {
+    container.innerHTML = `
+      <div class="polaroid">
+        <img src="${imageSrc}">
+        <p>${caption}</p>
+      </div>
+    `;
+    container.classList.remove("roleFadeOut");
+    container.classList.add("roleFadeIn");
+  }, 200);
 
   document.getElementById("shareContainer").style.display = "block";
 }
