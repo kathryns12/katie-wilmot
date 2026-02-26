@@ -193,6 +193,18 @@ button.roleBtn:hover,
   animation: pulse 2s infinite;
 }
 
+.countdownBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.countLabel {
+  font-size: clamp(12px, 3vw, 16px); /* slightly smaller than numbers */
+  font-weight: normal;
+  margin-top: 5px;
+}
+
 @keyframes pulse {
   0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0); }
   50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5); }
@@ -286,9 +298,17 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 <div id="countdownContainer">
   <div id="countdownLabel">✦ show begins in ✦</div>
   <div id="countdownBoxes">
-    <div class="countdownBox" id="daysBox">0</div>
-    <div class="countdownBox" id="hoursBox">0</div>
-    <div class="countdownBox" id="minutesBox">0</div>
+  <div class="countdownBox">
+    <div class="countNumber" id="daysBox">0</div>
+    <div class="countLabel">Days</div>
+  </div>
+  <div class="countdownBox">
+    <div class="countNumber" id="hoursBox">0</div>
+    <div class="countLabel">Hours</div>
+  </div>
+  <div class="countdownBox">
+    <div class="countNumber" id="minutesBox">0</div>
+    <div class="countLabel">Minutes</div>
   </div>
 </div>
 
