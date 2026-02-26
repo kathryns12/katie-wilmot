@@ -7,6 +7,7 @@
 
 <style>
 :root { --vh: 100vh; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -21,6 +22,7 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
+/* Polka dots */
 body.showDots::before {
   content: "";
   position: fixed;
@@ -32,14 +34,31 @@ body.showDots::before {
   animation: moveDots 35s linear infinite;
 }
 
-@keyframes moveDots { from { background-position: 0 0; } to { background-position: 300px 0; } }
+@keyframes moveDots {
+  from { background-position: 0px 0px; }
+  to { background-position: 300px 0px; }
+}
 
-.fadeIn { opacity: 0; animation: smoothFade 0.8s ease forwards; }
-.fadeOut { opacity: 1; animation: smoothFadeOut 0.3s ease forwards; }
+/* Smooth fade utility */
+.fadeIn {
+  opacity: 0;
+  animation: smoothFade 0.8s ease forwards;
+}
+.fadeOut {
+  animation: smoothFadeOut 0.3s ease forwards;
+}
 
-@keyframes smoothFade { from { opacity: 0; transform: translateY(15px); } to { opacity:1; transform: translateY(0); } }
-@keyframes smoothFadeOut { from { opacity: 1; } to { opacity:0; } }
+@keyframes smoothFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
+@keyframes smoothFadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(15px); }
+}
+
+/* Envelope */
 #envelopeScreen {
   position: fixed;
   inset: 0;
@@ -51,15 +70,45 @@ body.showDots::before {
   z-index: 1000;
 }
 
-.envelope-img { width: clamp(190px, 42vw, 320px); animation: floatBounce 2.2s ease-in-out infinite; cursor: pointer; }
-@keyframes floatBounce { 0%{transform:translateY(0);}50%{transform:translateY(-18px);}100%{transform:translateY(0);} }
+.envelope-img {
+  width: clamp(190px, 42vw, 320px);
+  animation: floatBounce 2.2s ease-in-out infinite;
+  cursor: pointer;
+}
 
+@keyframes floatBounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+  100% { transform: translateY(0); }
+}
+
+/* Layout */
 .container { padding: 20px 10%; }
 
-h1 { font-size: clamp(36px,8vw,60px); margin-top:0; margin-bottom:10px; opacity:0; }
-input { width:80%; max-width:300px; padding:12px; border-radius:30px; border:2px solid #8c0f14; text-align:center; margin-top:10px; opacity:0; }
-input:focus { outline:2px solid #8c0f14; outline-offset:0; }
+h1 {
+  font-size: clamp(36px, 8vw, 60px);
+  margin-top: 0;
+  margin-bottom: 10px;
+  opacity: 0;
+}
 
+input {
+  width: 80%;
+  max-width: 300px;
+  padding: 12px;
+  border-radius: 30px;
+  border: 2px solid #8c0f14;
+  text-align: center;
+  margin-top: 10px;
+  opacity: 0;
+}
+
+input:focus {
+  outline: 2px solid #8c0f14;
+  outline-offset: 0;
+}
+
+/* Buttons - unified unlock, role, and share */
 button.unlock,
 button.roleBtn,
 #shareContainer button {
@@ -79,20 +128,48 @@ button.unlock:hover,
 button.roleBtn:hover,
 #shareContainer button:hover {
   background: #ffe6e9;
-  transform: scale(1.04);
+  transform: scale(1.05);
   box-shadow: 0 0 10px #ff8fa3, 0 0 16px #ffb3c1;
 }
 
-#shareContainer { margin-top:20px; min-height:60px; opacity:0; transition: opacity 0.35s ease; }
-#shareContainer.visible { opacity:1; }
+/* Share container adjustments */
+#shareContainer {
+  margin-top: 20px;
+  min-height: 60px;
+  opacity: 1;              /* Always visible when container is visible */
+  transition: opacity 0.35s ease;
+}
 
-#message { margin-top:25px; font-size: clamp(18px,4vw,28px); }
+#shareContainer button {
+  opacity: 1;               /* Ensure button is visible */
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
 
-#countdownContainer { margin-top:25px; margin-bottom:50px; display:none; flex-direction:column; align-items:center; }
-#countdownContainer.fadeIn { display:flex; animation: smoothFade 0.8s ease forwards; }
+/* Message & Countdown */
+#message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
 
-#countdownLabel { font-size: clamp(18px,4vw,28px); margin-bottom:10px; }
-#countdownBoxes { display:flex; gap:15px; }
+#countdownContainer {
+  margin-top: 25px;
+  margin-bottom: 50px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#countdownContainer.fadeIn {
+  display: flex;
+  animation: smoothFade 0.8s ease forwards;
+}
+
+#countdownLabel {
+  font-size: clamp(18px, 4vw, 28px);
+  margin-bottom: 10px;
+}
+
+#countdownBoxes {
+  display: flex;
+  gap: 15px;
+}
 
 .countdownBox {
   background: #ffe6e9;
@@ -103,30 +180,35 @@ button.roleBtn:hover,
   font-weight: bold;
   min-width: 50px;
   text-align: center;
-  font-size: clamp(18px,4vw,28px);
+  font-size: clamp(18px, 4vw, 28px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0%,100% { transform: scale(1); box-shadow:0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0); }
-  50% { transform: scale(1.08); box-shadow:0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5); }
+  0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);}
+  50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);}
 }
 
-#roles { display:none; }
-#roles h2 { margin-bottom:10px; }
+/* Roles */
+#roles { display: none; }
+#roles h2 { margin-bottom: 10px; }
 
-#polaroids { display:none; flex-wrap:wrap; justify-content:center; gap:30px; margin:30px 0; }
+/* Polaroids */
+#polaroids { display: none; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 30px 0; }
 
-.polaroid { background:white; padding:15px 15px 35px; box-shadow:0 6px 12px rgba(0,0,0,0.25); transform:rotate(-2deg); transition:0.3s ease; }
-.polaroid img { width: clamp(180px,22vw,260px); }
+.polaroid { background: white; padding: 15px 15px 35px; box-shadow: 0 6px 12px rgba(0,0,0,0.25); transform: rotate(-2deg); transition: 0.3s ease; }
+
+.polaroid img { width: clamp(180px, 22vw, 260px); }
+
 .polaroid:hover { transform: rotate(0deg) scale(1.05); }
 
-#rolePolaroid { margin-top:25px; display:flex; justify-content:center; min-height:320px; opacity:1; transition: opacity 0.35s ease; }
-#rolePolaroid.fade-out { opacity:0; }
+#rolePolaroid { margin-top: 25px; display: flex; justify-content: center; min-height: 320px; opacity: 1; transition: opacity 0.35s ease; }
 
-#roleResult { font-size: clamp(22px,5vw,36px); opacity:0; transition: opacity 0.35s ease; }
-button.roleBtn { opacity:0; transition: opacity 0.35s ease; }
+#rolePolaroid.fade-out { opacity: 0; }
+
+#roleResult { font-size: clamp(22px, 5vw, 36px); opacity: 0; transition: opacity 0.35s ease; }
+button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 </style>
 </head>
@@ -143,7 +225,9 @@ button.roleBtn { opacity:0; transition: opacity 0.35s ease; }
 <div class="container">
 
 <h1 id="mainHeading">reserve a seat for a surprise ꩜</h1>
-<input type="text" id="nameInput" placeholder="enter your artist's name"><br>
+
+<input type="text" id="nameInput" placeholder="enter your artist's name">
+<br>
 <button class="unlock" onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
 
 <div id="message"></div>
@@ -195,6 +279,7 @@ function openEnvelope() {
   document.body.style.overflow = "auto";
   window.scrollTo(0,0);
 
+  // Fade in heading, input, unlock button
   document.getElementById("mainHeading").classList.add("fadeIn");
   document.getElementById("nameInput").classList.add("fadeIn");
   document.querySelector("button.unlock").classList.add("fadeIn");
@@ -225,6 +310,7 @@ function showMessage() {
   startCountdown();
 }
 
+// Countdown (numeric-only)
 function startCountdown() {
   if(countdownInterval) clearInterval(countdownInterval);
   const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
@@ -252,12 +338,21 @@ function selectRole(role) {
   const result = document.getElementById("roleResult");
   const polaroidContainer = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
+  const shareBtn = share.querySelector("button");
 
+  // Ensure share button container is visible
   share.classList.add("visible");
+  share.style.opacity = 1;
 
-  result.classList.remove("fadeIn"); result.classList.add("fadeOut");
+  // Reset fade classes
+  result.classList.remove("fadeIn","fadeOut");
+  polaroidContainer.classList.remove("fadeIn","fade-out");
+  shareBtn.classList.remove("fadeIn","fadeOut");
+
+  // Trigger fadeOut then fadeIn for all
+  result.classList.add("fadeOut");
   polaroidContainer.classList.add("fade-out");
-  share.classList.remove("fadeIn"); share.classList.add("fadeOut");
+  shareBtn.classList.add("fadeOut");
 
   setTimeout(()=>{
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
@@ -269,7 +364,7 @@ function selectRole(role) {
 
     result.classList.remove("fadeOut"); result.classList.add("fadeIn");
     polaroidContainer.classList.remove("fade-out"); polaroidContainer.classList.add("fadeIn");
-    share.classList.remove("fadeOut"); share.classList.add("fadeIn");
+    shareBtn.classList.remove("fadeOut"); shareBtn.classList.add("fadeIn");
   }, 300);
 }
 
