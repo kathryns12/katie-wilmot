@@ -21,7 +21,6 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Polka dots */
 body.showDots::before {
   content: "";
   position: fixed;
@@ -32,30 +31,15 @@ body.showDots::before {
   z-index: -1;
   animation: moveDots 35s linear infinite;
 }
-@keyframes moveDots {
-  from { background-position: 0px 0px; }
-  to   { background-position: 300px 0px; }
-}
 
-/* Smooth fade utility */
-.fadeIn {
-  opacity: 0;
-  animation: smoothFade 0.8s ease forwards;
-}
-.fadeOut {
-  opacity: 1;
-  animation: smoothFadeOut 0.35s ease forwards;
-}
-@keyframes smoothFade {
-  from { opacity: 0; transform: translateY(15px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes smoothFadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(15px); }
-}
+@keyframes moveDots { from { background-position: 0 0; } to { background-position: 300px 0; } }
 
-/* Envelope */
+.fadeIn { opacity: 0; animation: smoothFade 0.8s ease forwards; }
+.fadeOut { opacity: 1; animation: smoothFadeOut 0.3s ease forwards; }
+
+@keyframes smoothFade { from { opacity: 0; transform: translateY(15px); } to { opacity:1; transform: translateY(0); } }
+@keyframes smoothFadeOut { from { opacity: 1; } to { opacity:0; } }
+
 #envelopeScreen {
   position: fixed;
   inset: 0;
@@ -66,41 +50,16 @@ body.showDots::before {
   align-items: center;
   z-index: 1000;
 }
-.envelope-img {
-  width: clamp(190px, 42vw, 320px);
-  animation: floatBounce 2.2s ease-in-out infinite;
-  cursor: pointer;
-}
-@keyframes floatBounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-18px); }
-  100% { transform: translateY(0); }
-}
 
-/* Layout */
+.envelope-img { width: clamp(190px, 42vw, 320px); animation: floatBounce 2.2s ease-in-out infinite; cursor: pointer; }
+@keyframes floatBounce { 0%{transform:translateY(0);}50%{transform:translateY(-18px);}100%{transform:translateY(0);} }
+
 .container { padding: 20px 10%; }
-h1 {
-  font-size: clamp(36px, 8vw, 60px);
-  margin-top: 0;
-  margin-bottom: 10px;
-  opacity: 0;
-}
-input {
-  width: 80%;
-  max-width: 300px;
-  padding: 12px;
-  border-radius: 30px;
-  border: 2px solid #8c0f14;
-  text-align: center;
-  margin-top: 10px;
-  opacity: 0;
-}
-input:focus {
-  outline: 2px solid #8c0f14;
-  outline-offset: 0;
-}
 
-/* Buttons - unified unlock, role, and share */
+h1 { font-size: clamp(36px,8vw,60px); margin-top:0; margin-bottom:10px; opacity:0; }
+input { width:80%; max-width:300px; padding:12px; border-radius:30px; border:2px solid #8c0f14; text-align:center; margin-top:10px; opacity:0; }
+input:focus { outline:2px solid #8c0f14; outline-offset:0; }
+
 button.unlock,
 button.roleBtn,
 #shareContainer button {
@@ -115,44 +74,26 @@ button.roleBtn,
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   opacity: 0;
 }
+
 button.unlock:hover,
 button.roleBtn:hover,
 #shareContainer button:hover {
   background: #ffe6e9;
   transform: scale(1.04);
-  box-shadow: 0 0 8px #ff8fa3, 0 0 14px #ffb3c1;
+  box-shadow: 0 0 10px #ff8fa3, 0 0 16px #ffb3c1;
 }
 
-/* Share container adjustments */
-#shareContainer {
-  margin-top: 20px;
-  min-height: 60px;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-#shareContainer.visible { opacity: 1; }
+#shareContainer { margin-top:20px; min-height:60px; opacity:0; transition: opacity 0.35s ease; }
+#shareContainer.visible { opacity:1; }
 
-/* Message & Countdown */
-#message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
-#countdownContainer {
-  margin-top: 25px;
-  margin-bottom: 50px;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-}
-#countdownContainer.fadeIn {
-  display: flex;
-  animation: smoothFade 0.8s ease forwards;
-}
-#countdownLabel {
-  font-size: clamp(18px, 4vw, 28px);
-  margin-bottom: 10px;
-}
-#countdownBoxes {
-  display: flex;
-  gap: 15px;
-}
+#message { margin-top:25px; font-size: clamp(18px,4vw,28px); }
+
+#countdownContainer { margin-top:25px; margin-bottom:50px; display:none; flex-direction:column; align-items:center; }
+#countdownContainer.fadeIn { display:flex; animation: smoothFade 0.8s ease forwards; }
+
+#countdownLabel { font-size: clamp(18px,4vw,28px); margin-bottom:10px; }
+#countdownBoxes { display:flex; gap:15px; }
+
 .countdownBox {
   background: #ffe6e9;
   color: #8c0f14;
@@ -162,29 +103,31 @@ button.roleBtn:hover,
   font-weight: bold;
   min-width: 50px;
   text-align: center;
-  font-size: clamp(18px, 4vw, 28px);
+  font-size: clamp(18px,4vw,28px);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
-  0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);}
-  50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);}
+  0%,100% { transform: scale(1); box-shadow:0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0); }
+  50% { transform: scale(1.08); box-shadow:0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5); }
 }
 
-/* Roles */
-#roles { display: none; }
-#roles h2 { margin-bottom: 10px; }
+#roles { display:none; }
+#roles h2 { margin-bottom:10px; }
 
-/* Polaroids */
-#polaroids { display: none; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 30px 0; }
-.polaroid { background: white; padding: 15px 15px 35px; box-shadow: 0 6px 12px rgba(0,0,0,0.25); transform: rotate(-2deg); transition: 0.3s ease; }
-.polaroid img { width: clamp(180px, 22vw, 260px); }
+#polaroids { display:none; flex-wrap:wrap; justify-content:center; gap:30px; margin:30px 0; }
+
+.polaroid { background:white; padding:15px 15px 35px; box-shadow:0 6px 12px rgba(0,0,0,0.25); transform:rotate(-2deg); transition:0.3s ease; }
+.polaroid img { width: clamp(180px,22vw,260px); }
 .polaroid:hover { transform: rotate(0deg) scale(1.05); }
 
-#rolePolaroid { margin-top: 25px; display: flex; justify-content: center; min-height: 320px; opacity: 1; transition: opacity 0.35s ease; }
-#rolePolaroid.fade-out { opacity: 0; }
-#roleResult { font-size: clamp(22px, 5vw, 36px); opacity: 0; transition: opacity 0.35s ease; }
-button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
+#rolePolaroid { margin-top:25px; display:flex; justify-content:center; min-height:320px; opacity:1; transition: opacity 0.35s ease; }
+#rolePolaroid.fade-out { opacity:0; }
+
+#roleResult { font-size: clamp(22px,5vw,36px); opacity:0; transition: opacity 0.35s ease; }
+button.roleBtn { opacity:0; transition: opacity 0.35s ease; }
+
 </style>
 </head>
 
@@ -200,9 +143,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 <div class="container">
 
 <h1 id="mainHeading">reserve a seat for a surprise ꩜</h1>
-
-<input type="text" id="nameInput" placeholder="enter your artist's name">
-<br>
+<input type="text" id="nameInput" placeholder="enter your artist's name"><br>
 <button class="unlock" onclick="showMessage()">unlock my invitation 𖹭.ᐟ</button>
 
 <div id="message"></div>
@@ -284,7 +225,6 @@ function showMessage() {
   startCountdown();
 }
 
-// Countdown same as before
 function startCountdown() {
   if(countdownInterval) clearInterval(countdownInterval);
   const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
@@ -313,13 +253,13 @@ function selectRole(role) {
   const polaroidContainer = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
 
-  // Fade out all three
+  share.classList.add("visible");
+
   result.classList.remove("fadeIn"); result.classList.add("fadeOut");
   polaroidContainer.classList.add("fade-out");
   share.classList.remove("fadeIn"); share.classList.add("fadeOut");
 
   setTimeout(()=>{
-    // Update content
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
     let imageSrc="", caption="";
     if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
@@ -327,11 +267,9 @@ function selectRole(role) {
     if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
     polaroidContainer.innerHTML=`<div class="polaroid"><img src="${imageSrc}"><p>${caption}</p></div>`;
 
-    // Fade in all three
     result.classList.remove("fadeOut"); result.classList.add("fadeIn");
     polaroidContainer.classList.remove("fade-out"); polaroidContainer.classList.add("fadeIn");
     share.classList.remove("fadeOut"); share.classList.add("fadeIn");
-    share.classList.add("visible");
   }, 300);
 }
 
