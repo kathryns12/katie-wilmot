@@ -285,6 +285,10 @@ button.roleBtn:hover,
   transform: rotate(0deg) scale(1.05);
 }
 
+.kaomoji {
+  white-space: nowrap;
+}
+
 #rolePolaroid { 
   margin-top: 25px; 
   display: flex; 
@@ -470,15 +474,15 @@ function selectRole(displayRole, officialTitle, symbol) {
     let imageSrc="", caption="";
     if(displayRole==="on the strings"){
   imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
-  caption="make sure to bring ur guitar pick ( • ᴗ - ) ";
+  caption="make sure to bring ur guitar pick <span class='kaomoji'>( • ᴗ - )</span>";
     }
     if(displayRole==="on the keys"){
   imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
-  caption="chip ur nails, olivia rodrigo style ◝(ᵔᗜᵔ)◜";
+  caption="chip ur nails, olivia rodrigo style <span class='kaomoji'>◝(ᵔᗜᵔ)◜</span>";
     }
     if(displayRole==="with the mic"){
   imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
-  caption="drink lots of water ( ˶˘ ³˘)♡";
+  caption="drink lots of water <span class='kaomoji'>( ˶˘ ³˘)♡</span>";
     }
 
   container.innerHTML = `
