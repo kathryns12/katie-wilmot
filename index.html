@@ -365,15 +365,13 @@ function selectRole(role) {
   share.querySelector("button").classList.add("fadeIn");
 }
 
-// Dynamic share button
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
   const shareText = `I just got invited to the biggest reveal of the year ✨
 
 Role: ${selectedRole}
 Name on the guest list: ${invitedName} 💌
 
-Reserve your seat too 💖
-${window.location.href}`;
+Reserve your seat too 💖`;
 
   if(navigator.share){
     navigator.share({
@@ -382,7 +380,7 @@ ${window.location.href}`;
       url: window.location.href
     });
   } else {
-    navigator.clipboard.writeText(shareText);
+    navigator.clipboard.writeText(shareText + "\n\n" + window.location.href);
     alert("Invitation copied to clipboard ✨");
   }
 });
