@@ -136,8 +136,12 @@ button.roleBtn:hover,
 #shareContainer {
   margin-top: 20px;
   min-height: 60px;
-  opacity: 1;              /* Always visible when container is visible */
+  opacity: 0; /* hidden initially */
   transition: opacity 0.35s ease;
+}
+
+#shareContainer.visible {
+  opacity: 1; /* fade in when JS adds this class */
 }
 
 #shareContainer button {
