@@ -139,7 +139,12 @@ button.roleBtn:hover,
 }
 
 /* Message & Countdown */
-#message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
+#message { 
+  margin-top: 25px; 
+  font-size: clamp(18px, 4vw, 28px); 
+  opacity: 0; /* hide until role clicked */
+  transition: opacity 0.35s ease;
+}
 
 #countdownContainer {
   margin-top: 25px;
@@ -196,13 +201,22 @@ button.roleBtn:hover,
 
 .polaroid:hover { transform: rotate(0deg) scale(1.05); }
 
-#rolePolaroid { margin-top: 25px; display: flex; justify-content: center; min-height: 320px; opacity: 1; transition: opacity 0.35s ease; }
+#rolePolaroid { 
+  margin-top: 25px; 
+  display: flex; 
+  justify-content: center; 
+  min-height: 320px; 
+  opacity: 0; /* start hidden */
+  transition: opacity 0.35s ease; 
+}
 
-#rolePolaroid.fade-out { opacity: 0; }
+#rolePolaroid.fade-out { 
+  opacity: 0; 
+}
 
 #roleResult {
   font-size: clamp(22px, 5vw, 36px);
-  opacity: 0;
+  opacity: 0; /* start hidden */
   transition: opacity 0.35s ease;
 }
 
@@ -211,21 +225,26 @@ button.roleBtn:hover,
   min-height: 60px;
   display: flex;
   justify-content: center;
-  opacity: 0;
+  opacity: 0; /* start hidden */
   transition: opacity 0.35s ease;
 }
 
-/* Shared fade system */
+/* Correct fade system: fade-out only affects opacity */
 #roleResult.fade-out,
+#rolePolaroid.fade-out,
 #shareContainer.fade-out {
   opacity: 0;
 }
 
+/* Make visible without removing from layout */
 #roleResult.visible,
-#shareContainer.visible {
+#rolePolaroid.visible,
+#shareContainer.visible,
+#message.visible {
   opacity: 1;
 }
 
+/* Buttons hidden initially */
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 </style>
@@ -291,6 +310,7 @@ let countdownInterval;
 let selectedRole = "";
 let invitedName = "";
 
+// Open envelope screen
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
@@ -302,17 +322,18 @@ function openEnvelope() {
   document.querySelector("button.unlock").classList.add("fadeIn");
 }
 
+// Show invitation message, polaroids, countdown, and roles
 function showMessage() {
   let name = document.getElementById("nameInput").value;
   if(name.trim() === "") { alert("Enter your name, superstar 𖹭.ᐟ"); return; }
 
   invitedName = name;
 
-  let message = document.getElementById("message");
+  const message = document.getElementById("message");
   message.innerHTML = "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
-  message.classList.add("fadeIn");
+  message.classList.add("visible"); // now controlled by visible class
 
-  let polaroids = document.getElementById("polaroids");
+  const polaroids = document.getElementById("polaroids");
   polaroids.style.display = "flex";
   polaroids.classList.add("fadeIn");
 
@@ -349,19 +370,22 @@ function startCountdown() {
   countdownInterval = setInterval(updateCountdown,1000);
 }
 
+// Role selection
 function selectRole(role) {
   selectedRole = role;
 
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
-  const shareBtn = share.querySelector("button");
+  const message = document.getElementById("message");
 
-  // Fade out everything first (like polaroid)
-  result.classList.add("fade-out");
-  container.classList.add("fade-out");
-  shareBtn.classList.add("fade-out");
+  // Remove visible class to trigger fade-out
+  [result, container, share].forEach(el => {
+    el.classList.remove("visible");
+    el.classList.add("fade-out");
+  });
 
+  // Short delay to allow fade-out
   setTimeout(() => {
 
     // Update result text
@@ -369,18 +393,17 @@ function selectRole(role) {
 
     // Update polaroid
     let imageSrc = "", caption = "";
-
-    if(role === "Pop Star Icon"){
-      imageSrc = "https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
-      caption = "center stage, spotlight on you ✦";
+    if(role==="Pop Star Icon"){
+      imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
+      caption="center stage, spotlight on you ✦";
     }
-    if(role === "VIP Glitter Guest"){
-      imageSrc = "https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
-      caption = "front row glamour & sparkle ✧";
+    if(role==="VIP Glitter Guest"){
+      imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
+      caption="front row glamour & sparkle ✧";
     }
-    if(role === "Backstage Muse"){
-      imageSrc = "https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
-      caption = "behind the curtain magic ✴︎";
+    if(role==="Backstage Muse"){
+      imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
+      caption="behind the curtain magic ✴︎";
     }
 
     container.innerHTML = `
@@ -390,27 +413,16 @@ function selectRole(role) {
       </div>
     `;
 
-    // Fade in role result and polaroid
-    result.classList.remove("fade-out");
-    container.classList.remove("fade-out");
-    result.classList.add("fadeIn");
-    container.querySelector(".polaroid").classList.add("fadeIn");
+    // Remove fade-out and add visible to fade in
+    [result, container, share].forEach(el => {
+      el.classList.remove("fade-out");
+      el.classList.add("visible");
+    });
 
-    // Show and fade in share button every time
-    share.classList.add("visible");
-    shareBtn.classList.remove("fade-out");
-    shareBtn.classList.add("fadeIn");
-
-    // Remove fadeIn after animation completes so it can retrigger on same role
-    setTimeout(() => {
-      result.classList.remove("fadeIn");
-      container.querySelector(".polaroid").classList.remove("fadeIn");
-      shareBtn.classList.remove("fadeIn");
-    }, 800);
-
-  }, 300);
+  }, 200); // slightly shorter delay for smooth transition
 }
 
+// Share button functionality
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
   const shareText = `I just got invited to the biggest reveal of the year ✨
 
