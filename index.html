@@ -262,34 +262,31 @@ button.roleBtn:hover,
 #roles { display: none; }
 #roles h2 { margin-bottom: 10px; }
 
-#polaroids {
-  display: flex;
+/* Polaroids */
+#polaroids { 
+  display: none;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 30px;
+  margin:30px 0;
 }
 
-.polaroid {
-  width: clamp(200px, 24vw, 280px);
-  flex-shrink: 0;
-  box-sizing: border-box;
-  background: white;
-  padding: 15px 15px 30px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  transform: rotate(-2deg);
+.polaroid { 
+  background: white; 
+  padding: 15px 15px 20px; 
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25); 
+  transform: rotate(-2deg); 
   transition: 0.3s ease;
+  width: clamp(200px, 24vw, 280px)
+}
+
+.polaroid p {
+  margin: 10px 0 0;
 }
 
 .polaroid img {
   width: 100%;
   display: block;
-  margin: 0 auto;
-}
-
-.polaroid p {
-  text-align: center;
-  margin: 10px 0 0;
-  word-break: break-word;
 }
 
 .polaroid:hover {
