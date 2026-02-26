@@ -336,6 +336,39 @@ button.roleBtn:hover,
 /* Buttons hidden initially */
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
+/* --- INITIAL POLAROIDS ONLY --- */
+.initial-polaroid {
+  padding: 20px 20px 40px; /* equal top/sides, bigger bottom like real polaroid */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: clamp(200px, 24vw, 280px);
+  transform: rotate(-2deg);
+  transition: transform 0.3s ease;
+}
+
+.initial-polaroid img {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* forces square image */
+  object-fit: cover;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.initial-polaroid p {
+  margin: 0;
+  padding: 0 5px;
+  text-align: center;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.initial-polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
+}
 </style>
 </head>
 
@@ -359,12 +392,12 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 <div id="message"></div>
 
 <div id="polaroids">
-  <div class="polaroid">
-    <img src="https://i.pinimg.com/736x/df/28/17/df28172dfba76a6d276e8003a8184866.jpg">
+  <div class="polaroid initial-polaroid">
+    <img src="https://i.pinimg.com/736x/df/28/17/df28172dfba76a6d276e8003a8184866.jpg" alt="">
     <p>join us in this ride <3</p>
   </div>
-  <div class="polaroid">
-    <img src="https://i.pinimg.com/736x/73/12/94/731294529c6af00dba89ef03e53a8b8e.jpg">
+  <div class="polaroid initial-polaroid">
+    <img src="https://i.pinimg.com/736x/73/12/94/731294529c6af00dba89ef03e53a8b8e.jpg" alt="">
     <p>march 20, 21:30 utc</p>
   </div>
 </div>
