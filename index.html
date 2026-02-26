@@ -21,331 +21,122 @@
 <meta name="twitter:image" content="https://kathryns12.github.io/katie-wilmot/173KW_tomandosal.jpg" />
 
 <style>
-
 @media (max-width: 400px) {
-  h1 {
-    font-size: clamp(28px, 7vw, 40px);
-  }
-  
-  input {
-    width: 90%;
-    font-size: 16px;
-  }
-
-  button.unlock,
-  button.roleBtn,
-  #shareContainer button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-
-  #message {
-    font-size: clamp(16px, 4vw, 22px);
-  }
-
-  #roleResult {
-    font-size: clamp(18px, 5vw, 28px);
-  }
-
-  
-  #polaroids .polaroid img {
-    width: clamp(140px, 40vw, 200px);
-  }
+  h1 { font-size: clamp(28px, 7vw, 40px); }
+  input { width: 90%; font-size: 16px; }
+  button.unlock, button.roleBtn, #shareContainer button { font-size: 14px; padding: 8px 16px; }
+  #message { font-size: clamp(16px, 4vw, 22px); }
+  #roleResult { font-size: clamp(18px, 5vw, 28px); }
+  #polaroids .polaroid img { width: clamp(140px, 40vw, 200px); }
 }
 
 :root { --vh: 100vh; }
-
 html { scroll-behavior: smooth; }
-
 body {
-  margin: 0;
-  padding: 0;
-  height: var(--vh);
-  overflow: hidden;
-  background-color: #FFDBDC;
-  font-family: 'Gaegu', cursive;
-  color: #8c0f14;
-  text-align: center;
+  margin: 0; padding: 0; height: var(--vh);
+  overflow: hidden; background-color: #FFDBDC;
+  font-family: 'Gaegu', cursive; color: #8c0f14; text-align: center;
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
-/* Polka dots */
 body.showDots::before {
   content: "";
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background-image: radial-gradient(#8c0f14 2px, transparent 2px);
   background-size: 30px 30px;
-  opacity: 0.25;
-  z-index: -1;
+  opacity: 0.25; z-index: -1;
   animation: moveDots 35s linear infinite;
 }
+@keyframes moveDots { from { background-position:0 0;} to{background-position:300px 0;} }
 
-@keyframes moveDots {
-  from { background-position: 0px 0px; }
-  to   { background-position: 300px 0px; }
-}
+.fadeIn { opacity:0; animation: smoothFade 0.8s ease forwards; }
+@keyframes smoothFade { from {opacity:0; transform:translateY(15px);} to {opacity:1; transform:translateY(0);} }
 
-/* Smooth fade utility */
-.fadeIn {
-  opacity: 0;
-  animation: smoothFade 0.8s ease forwards;
-}
-
-@keyframes smoothFade {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Envelope */
 #envelopeScreen {
-  position: fixed;
-  inset: 0;
-  background-color: #FFDBDC;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  position: fixed; inset:0; background-color:#FFDBDC;
+  display:flex; flex-direction:column; justify-content:center; align-items:center;
+  z-index:1000;
 }
-
 .envelope-img {
-  width: clamp(190px, 42vw, 320px);
-  animation: floatBounce 2.2s ease-in-out infinite;
-  cursor: pointer;
+  width: clamp(190px,42vw,320px); animation: floatBounce 2.2s ease-in-out infinite; cursor:pointer;
 }
+@keyframes floatBounce { 0%{transform:translateY(0);}50%{transform:translateY(-18px);}100%{transform:translateY(0);} }
+.saveDateText { font-size: clamp(24px,6vw,40px); font-weight:bold; letter-spacing:1px; margin-top:15px; opacity:0.9; }
 
-@keyframes floatBounce {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-18px); }
-  100% { transform: translateY(0); }
-}
-
-.saveDateText {
-  font-size: clamp(24px, 6vw, 40px);
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-top: 15px;
-  opacity: 0.9;
-}
-
-/* Layout */
 .container { padding: 20px 10%; }
-
-h1 {
-  font-size: clamp(36px, 8vw, 60px);
-  margin-top: 0;
-  margin-bottom: 10px;
-  opacity: 0;
-}
-
+h1 { font-size: clamp(36px,8vw,60px); margin-top:0; margin-bottom:10px; opacity:0; }
 input {
-  width: 80%;
-  max-width: 300px;
-  padding: 12px;
-  border-radius: 30px;
-  border: 2px solid #8c0f14;
-  text-align: center;
-  margin-top: 10px;
-  opacity: 0;
+  width:80%; max-width:300px; padding:12px; border-radius:30px; border:2px solid #8c0f14;
+  text-align:center; margin-top:10px; opacity:0;
 }
+input:focus { outline: 2px solid #8c0f14; outline-offset:0; }
 
-input:focus {
-  outline: 2px solid #8c0f14;
-  outline-offset: 0;
-}
-
-/* Buttons */
-button.unlock,
-button.roleBtn {
-  padding: 10px 20px;
-  border-radius: 30px;
-  border: 1px solid #8c0f14;
-  background: white;
-  color: #8c0f14;
-  font-weight: bold;
-  margin: 10px;
-  cursor: pointer;
+button.unlock, button.roleBtn {
+  padding: 10px 20px; border-radius:30px; border:1px solid #8c0f14; background:white;
+  color:#8c0f14; font-weight:bold; margin:10px; cursor:pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-  opacity: 0;
+  opacity:0;
 }
-
 #shareContainer button {
-  padding: 10px 20px;
-  border-radius: 30px;
-  border: 1px solid #8c0f14;
-  background: white;
-  color: #8c0f14;
-  font-weight: bold;
-  cursor: pointer;
+  padding: 10px 20px; border-radius:30px; border:1px solid #8c0f14; background:white;
+  color:#8c0f14; font-weight:bold; cursor:pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
-
-/* Hover effect: subtle scale and glow */
-button.unlock:hover,
-button.roleBtn:hover,
-#shareContainer button:hover {
-  background: #ffe6e9;
-  transform: scale(1.05);
-  box-shadow: 0 0 8px #ff8fa3, 0 0 16px #ffb3c1;
+button.unlock:hover, button.roleBtn:hover, #shareContainer button:hover {
+  background:#ffe6e9; transform:scale(1.05); box-shadow:0 0 8px #ff8fa3,0 0 16px #ffb3c1;
 }
 
-/* Message & Countdown */
-#message { 
-  margin-top: 25px; 
-  font-size: clamp(18px, 4vw, 28px); 
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
+#message { margin-top:25px; font-size: clamp(18px,4vw,28px); opacity:0; transition:opacity 0.35s ease; }
 
 #countdownContainer {
-  margin-top: 25px;
-  margin-bottom: 50px;
-  display: none;
-  flex-direction: column;
-  align-items: center;
+  margin-top:25px; margin-bottom:50px;
+  display:none; flex-direction:column; align-items:center;
 }
-
-#countdownContainer.fadeIn {
-  display: flex;
-  animation: smoothFade 0.8s ease forwards;
-}
-
-#countdownLabel {
-  font-size: clamp(18px, 4vw, 28px);
-  margin-bottom: 10px;
-}
-
-#countdownBoxes {
-  display: flex;
-  gap: 15px;
-}
-
+#countdownContainer.fadeIn { display:flex; animation:smoothFade 0.8s ease forwards; }
+#countdownLabel { font-size: clamp(18px,4vw,28px); margin-bottom:10px; }
+#countdownBoxes { display:flex; gap:15px; }
 .countdownBox {
-  background: #ffe6e9;
-  color: #8c0f14;
-  padding: 12px 18px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  font-weight: bold;
-  min-width: 50px;
-  text-align: center;
-  font-size: clamp(18px, 4vw, 28px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: pulse 2s infinite;
+  background:#ffe6e9; color:#8c0f14; padding:12px 18px; border-radius:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.15); font-weight:bold; min-width:50px; text-align:center;
+  font-size:clamp(18px,4vw,28px); transition:transform 0.3s ease, box-shadow 0.3s ease; animation:pulse 2s infinite;
+  display:flex; flex-direction:column; align-items:center;
 }
+.countLabel { font-size: clamp(12px,3vw,16px); font-weight:normal; margin-top:5px; }
+@keyframes pulse { 0%,100%{transform:scale(1); box-shadow:0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);}50%{transform:scale(1.08); box-shadow:0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);} }
 
-.countdownBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+#roles { display:none; }
+#roles h2 { margin-bottom:10px; }
 
-.countLabel {
-  font-size: clamp(12px, 3vw, 16px); /* slightly smaller than numbers */
-  font-weight: normal;
-  margin-top: 5px;
-}
-
-@keyframes pulse {
-  0%,100% {
-    transform: scale(1);
-    box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);
-  }
-  50% {
-    transform: scale(1.08);
-    box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);
-  }
-}
-
-/* Roles */
-#roles { display: none; }
-#roles h2 { margin-bottom: 10px; }
-
-/* Initial polaroids */
+/* -------- INITIAL POLAROIDS FIXED -------- */
 #polaroids {
-  display: none;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  margin: 30px 0;
+  display:none; flex-wrap:wrap; justify-content:center; gap:30px; margin:30px 0;
 }
-
 #polaroids .polaroid {
-  background: white;
-  padding: 15px 15px 35px; /* top/sides smaller, bottom larger for polaroid effect */
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  transform: rotate(-2deg);
-  transition: 0.3s ease;
-  width: clamp(200px, 24vw, 280px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  background:white; padding:15px 15px 35px; /* bottom bigger for polaroid look */
+  box-shadow:0 6px 12px rgba(0,0,0,0.25);
+  transform:rotate(-2deg); transition:0.3s ease;
+  width: clamp(200px,24vw,280px);
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
 }
-
 #polaroids .polaroid img {
-  width: 100%;
-  aspect-ratio: 1 / 1; /* keeps images square */
-  object-fit: cover; /* crops if needed but stays square */
-  display: block;
+  width:100%; aspect-ratio:1/1; object-fit:cover; display:block;
 }
-
 #polaroids .polaroid p {
-  margin: 10px 0 0;
-  padding: 0 5px;
-  text-align: center;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  margin:10px 0 0; padding:0 5px; text-align:center; word-break:break-word; overflow-wrap:break-word;
 }
+#polaroids .polaroid:hover { transform: rotate(0deg) scale(1.05); }
+/* -------- ROLE POLAROIDS STAY AS THEY ARE -------- */
+.polaroid { transform: rotate(-2deg); box-shadow:0 6px 12px rgba(0,0,0,0.25); transition:0.3s ease; }
+.kaomoji { white-space:nowrap; }
 
-#polaroids .polaroid:hover {
-  transform: rotate(0deg) scale(1.05);
-}
+#rolePolaroid { margin-top:25px; display:flex; justify-content:center; min-height:320px; opacity:0; transition:opacity 0.35s ease; }
+#rolePolaroid.fade-out { opacity:0; }
+#roleResult { font-size: clamp(22px,5vw,36px); opacity:0; transition:opacity 0.35s ease; }
+#shareContainer { margin-top:20px; min-height:60px; display:flex; justify-content:center; opacity:0; transition:opacity 0.35s ease; }
 
-.kaomoji {
-  white-space: nowrap;
-}
-
-#rolePolaroid { 
-  margin-top: 25px; 
-  display: flex; 
-  justify-content: center; 
-  min-height: 320px; 
-  opacity: 0;
-  transition: opacity 0.35s ease; 
-}
-
-#rolePolaroid.fade-out { opacity: 0; }
-
-#roleResult {
-  font-size: clamp(22px, 5vw, 36px);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-#shareContainer {
-  margin-top: 20px;
-  min-height: 60px;
-  display: flex;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-/* Fade system */
-#roleResult.fade-out,
-#rolePolaroid.fade-out,
-#shareContainer.fade-out { opacity: 0; }
-
-#roleResult.visible,
-#rolePolaroid.visible,
-#shareContainer.visible,
-#message.visible { opacity: 1; }
-
-/* Buttons hidden initially */
-button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
-
+#roleResult.fade-out, #rolePolaroid.fade-out, #shareContainer.fade-out { opacity:0; }
+#roleResult.visible, #rolePolaroid.visible, #shareContainer.visible, #message.visible { opacity:1; }
+button.roleBtn { opacity:0; transition:opacity 0.35s ease; }
 </style>
 </head>
 
@@ -382,17 +173,18 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 <div id="countdownContainer">
   <div id="countdownLabel">⟡ this era begins in ⟡</div>
   <div id="countdownBoxes">
-  <div class="countdownBox">
-    <div class="countNumber" id="daysBox">0</div>
-    <div class="countLabel">Days</div>
-  </div>
-  <div class="countdownBox">
-    <div class="countNumber" id="hoursBox">0</div>
-    <div class="countLabel">Hours</div>
-  </div>
-  <div class="countdownBox">
-    <div class="countNumber" id="minutesBox">0</div>
-    <div class="countLabel">Minutes</div>
+    <div class="countdownBox">
+      <div class="countNumber" id="daysBox">0</div>
+      <div class="countLabel">Days</div>
+    </div>
+    <div class="countdownBox">
+      <div class="countNumber" id="hoursBox">0</div>
+      <div class="countLabel">Hours</div>
+    </div>
+    <div class="countdownBox">
+      <div class="countNumber" id="minutesBox">0</div>
+      <div class="countLabel">Minutes</div>
+    </div>
   </div>
 </div>
 
