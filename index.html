@@ -5,6 +5,19 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 
+<!-- Open Graph meta tags for social sharing previews -->
+<meta property="og:title" content="You're invited to the biggest reveal! ✨" />
+<meta property="og:description" content="Join me at the surprise fandom event and see your role revealed! 💌" />
+<meta property="og:image" content="https://i.pinimg.com/originals/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg" />
+<meta property="og:url" content="https://yourwebsite.com/invite.html" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="You're invited to the biggest reveal! ✨" />
+<meta name="twitter:description" content="Join me at the surprise fandom event and see your role revealed! 💌" />
+<meta name="twitter:image" content="https://i.pinimg.com/originals/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg" />
+
 <style>
 :root { --vh: 100vh; }
 
@@ -36,7 +49,7 @@ body.showDots::before {
 
 @keyframes moveDots {
   from { background-position: 0px 0px; }
-  to { background-position: 300px 0px; }
+  to   { background-position: 300px 0px; }
 }
 
 /* Smooth fade utility */
@@ -44,18 +57,10 @@ body.showDots::before {
   opacity: 0;
   animation: smoothFade 0.8s ease forwards;
 }
-.fadeOut {
-  animation: smoothFadeOut 0.3s ease forwards;
-}
 
 @keyframes smoothFade {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes smoothFadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(15px); }
 }
 
 /* Envelope */
@@ -108,7 +113,7 @@ input:focus {
   outline-offset: 0;
 }
 
-/* Buttons - unified unlock, role, and share */
+/* Buttons */
 button.unlock,
 button.roleBtn,
 #shareContainer button {
@@ -124,30 +129,26 @@ button.roleBtn,
   opacity: 0;
 }
 
+/* Hover effect: subtle scale and glow */
 button.unlock:hover,
 button.roleBtn:hover,
 #shareContainer button:hover {
   background: #ffe6e9;
   transform: scale(1.05);
-  box-shadow: 0 0 10px #ff8fa3, 0 0 16px #ffb3c1;
+  box-shadow: 0 0 8px #ff8fa3, 0 0 16px #ffb3c1;
 }
 
 /* Share container adjustments */
 #shareContainer {
   margin-top: 20px;
   min-height: 60px;
-  opacity: 0; /* hidden initially */
+  opacity: 0;
   transition: opacity 0.35s ease;
+  display: flex;
+  justify-content: center;
 }
 
-#shareContainer.visible {
-  opacity: 1; /* fade in when JS adds this class */
-}
-
-#shareContainer button {
-  opacity: 1;               /* Ensure button is visible */
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-}
+#shareContainer.visible { opacity: 1; }
 
 /* Message & Countdown */
 #message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
@@ -190,8 +191,8 @@ button.roleBtn:hover,
 }
 
 @keyframes pulse {
-  0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);}
-  50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);}
+  0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0); }
+  50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5); }
 }
 
 /* Roles */
@@ -212,6 +213,7 @@ button.roleBtn:hover,
 #rolePolaroid.fade-out { opacity: 0; }
 
 #roleResult { font-size: clamp(22px, 5vw, 36px); opacity: 0; transition: opacity 0.35s ease; }
+
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 </style>
@@ -283,7 +285,6 @@ function openEnvelope() {
   document.body.style.overflow = "auto";
   window.scrollTo(0,0);
 
-  // Fade in heading, input, unlock button
   document.getElementById("mainHeading").classList.add("fadeIn");
   document.getElementById("nameInput").classList.add("fadeIn");
   document.querySelector("button.unlock").classList.add("fadeIn");
@@ -314,7 +315,7 @@ function showMessage() {
   startCountdown();
 }
 
-// Countdown (numeric-only)
+// Countdown numeric-only
 function startCountdown() {
   if(countdownInterval) clearInterval(countdownInterval);
   const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
@@ -340,42 +341,50 @@ function selectRole(role) {
   selectedRole = role;
 
   const result = document.getElementById("roleResult");
-  const polaroidContainer = document.getElementById("rolePolaroid");
-  const share = document.getElementById("shareContainer");
-  const shareBtn = share.querySelector("button");
-
-  // Ensure share button container is visible
-  share.classList.add("visible");
-  share.style.opacity = 1;
-
-  // Reset fade classes
-  result.classList.remove("fadeIn","fadeOut");
-  polaroidContainer.classList.remove("fadeIn","fade-out");
-  shareBtn.classList.remove("fadeIn","fadeOut");
-
-  // Trigger fadeOut then fadeIn for all
-  result.classList.add("fadeOut");
-  polaroidContainer.classList.add("fade-out");
-  shareBtn.classList.add("fadeOut");
-
+  result.classList.add("fade-out");
   setTimeout(()=>{
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
+    result.classList.remove("fade-out");
+    result.classList.add("fadeIn");
+  },300);
+
+  const container = document.getElementById("rolePolaroid");
+  container.classList.add("fade-out");
+  setTimeout(()=>{
     let imageSrc="", caption="";
     if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
     if(role==="VIP Glitter Guest"){ imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg"; caption="front row glamour & sparkle ✧";}
     if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
-    polaroidContainer.innerHTML=`<div class="polaroid"><img src="${imageSrc}"><p>${caption}</p></div>`;
+    container.innerHTML=`<div class="polaroid fadeIn"><img src="${imageSrc}"><p>${caption}</p></div>`;
+    container.classList.remove("fade-out");
+  },300);
 
-    result.classList.remove("fadeOut"); result.classList.add("fadeIn");
-    polaroidContainer.classList.remove("fade-out"); polaroidContainer.classList.add("fadeIn");
-    shareBtn.classList.remove("fadeOut"); shareBtn.classList.add("fadeIn");
-  }, 300);
+  // Show share button only after role is selected
+  const share = document.getElementById("shareContainer");
+  share.classList.add("visible");
+  share.querySelector("button").classList.add("fadeIn");
 }
 
+// Dynamic share button
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
-  const shareText = "I just got invited to the biggest reveal of the year ✨\n\nRole: "+selectedRole+"\nName on the guest list: "+invitedName+" 💌\n\nReserve your seat too 💖\n"+window.location.href;
-  if(navigator.share){navigator.share({title:"I got invited ✨", text:shareText, url:window.location.href});} 
-  else { navigator.clipboard.writeText(shareText); alert("Invitation copied to clipboard ✨"); }
+  const shareText = `I just got invited to the biggest reveal of the year ✨
+
+Role: ${selectedRole}
+Name on the guest list: ${invitedName} 💌
+
+Reserve your seat too 💖
+${window.location.href}`;
+
+  if(navigator.share){
+    navigator.share({
+      title: "I got invited ✨",
+      text: shareText,
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(shareText);
+    alert("Invitation copied to clipboard ✨");
+  }
 });
 </script>
 
