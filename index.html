@@ -347,9 +347,9 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 <div id="roles">
   <h2>where do you want to be?</h2>
-  <button class="roleBtn" onclick="selectRole('on the strings')">on the strings 🎸</button>
-  <button class="roleBtn" onclick="selectRole('on the keys')">on the keys 🎹</button>
-  <button class="roleBtn" onclick="selectRole('with the mic')">with the mic 🎤</button>
+  <button class="roleBtn" onclick="selectRole('on the strings', 'lead guitarist')">on the strings 🎸</button>
+  <button class="roleBtn" onclick="selectRole('on the keys', 'lead pianist')">on the keys 🎹</button>
+  <button class="roleBtn" onclick="selectRole('with the mic', 'lead vocalist')">with the mic 🎤</button>
 </div>
 
 <div id="roleResult"></div>
@@ -423,8 +423,8 @@ function startCountdown() {
   countdownInterval = setInterval(updateCountdown,1000);
 }
 
-function selectRole(role) {
-  selectedRole = role;
+function selectRole(displayRole, officialTitle) {
+  selectedRole = displayRole;
 
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
@@ -436,18 +436,18 @@ function selectRole(role) {
   });
 
   setTimeout(() => {
-    result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
+    result.innerHTML = "✴︎ you are officially our " + officialTitle + "! ✴︎";
 
     let imageSrc="", caption="";
-    if(role==="on the strings"){
+    if(displayRole==="on the strings"){
       imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
       caption="center stage, spotlight on you ✦";
     }
-    if(role==="on the keys"){
+    if(displayRole==="on the keys"){
       imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
       caption="front row glamour & sparkle ✧";
     }
-    if(role==="with the mic"){
+    if(displayRole==="with the mic"){
       imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
       caption="behind the curtain magic ✴︎";
     }
@@ -462,7 +462,6 @@ function selectRole(role) {
   },200);
 }
 
-// Share button
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
   const shareText = `I just got invited to the biggest reveal of the year ✨
 
