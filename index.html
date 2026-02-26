@@ -22,6 +22,23 @@
 
 <style>
 
+@media (max-width: 600px) {
+  .initial-polaroid {
+    padding: 10px 10px 25px;
+  }
+
+  .initial-polaroid img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .initial-polaroid p {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 400px) {
   h1 {
     font-size: clamp(28px, 7vw, 40px);
