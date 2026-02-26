@@ -268,7 +268,8 @@ button.roleBtn:hover,
   padding: 15px 15px 20px; 
   box-shadow: 0 6px 12px rgba(0,0,0,0.25); 
   transform: rotate(-2deg); 
-  transition: 0.3s ease; 
+  transition: 0.3s ease;
+  width: clamp(200px, 24vw, 280px)
 }
 
 .polaroid p {
@@ -276,7 +277,8 @@ button.roleBtn:hover,
 }
 
 .polaroid img {
-  width: clamp(180px, 22vw, 260px);
+  width: 100%;
+  display: block;
 }
 
 .polaroid:hover {
