@@ -47,6 +47,7 @@
     font-size: clamp(18px, 5vw, 28px);
   }
 
+  
   #polaroids .polaroid img {
     width: clamp(140px, 40vw, 200px);
   }
@@ -241,52 +242,70 @@ button.roleBtn:hover,
 }
 
 .countLabel {
-  font-size: clamp(12px, 3vw, 16px);
+  font-size: clamp(12px, 3vw, 16px); /* slightly smaller than numbers */
   font-weight: normal;
   margin-top: 5px;
 }
 
 @keyframes pulse {
-  0%,100% { transform: scale(1); box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0); }
-  50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5); }
+  0%,100% {
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(255,143,163,0.5),0 0 0 rgba(255,179,193,0);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);
+  }
 }
 
 /* Roles */
 #roles { display: none; }
 #roles h2 { margin-bottom: 10px; }
 
-/* Polaroids (initial and role polaroids now unified style) */
+/* Polaroids */
+#polaroids { 
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin:30px 0;
+}
+
 .polaroid { 
   background: white; 
-  padding: 15px 15px 35px; 
+  padding: 15px 15px 20px; 
   box-shadow: 0 6px 12px rgba(0,0,0,0.25); 
   transform: rotate(-2deg); 
   transition: 0.3s ease;
-  width: clamp(180px, 22vw, 260px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.polaroid img {
-  width: 100%; 
-  display: block;
+  width: clamp(200px, 24vw, 280px)
 }
 
 .polaroid p {
   margin: 10px 0 0;
+}
+
+#polaroids .polaroid p {
+  margin: 0;
+  padding: 0 5px;
   text-align: center;
-  word-break: break-word;
+  display: block;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
-.polaroid:hover { transform: rotate(0deg) scale(1.05); }
+.polaroid img {
+  width: 100%;
+  display: block;
+}
 
-/* Kaomoji */
-.kaomoji { white-space: nowrap; }
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
+}
 
-/* Role polaroid container */
+.kaomoji {
+  white-space: nowrap;
+}
+
 #rolePolaroid { 
   margin-top: 25px; 
   display: flex; 
