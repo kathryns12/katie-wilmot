@@ -212,7 +212,20 @@ button.roleBtn:hover,
 
 #rolePolaroid.fade-out { opacity: 0; }
 
-#roleResult { font-size: clamp(22px, 5vw, 36px); opacity: 0; transition: opacity 0.35s ease; }
+#roleResult.fade-out,
+#shareContainer.fade-out {
+  opacity: 0;
+}
+
+#roleResult {
+  font-size: clamp(22px, 5vw, 36px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#shareContainer {
+  transition: opacity 0.35s ease;
+}
 
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
@@ -341,28 +354,52 @@ function selectRole(role) {
   selectedRole = role;
 
   const result = document.getElementById("roleResult");
-  result.classList.add("fade-out");
-  setTimeout(()=>{
-    result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
-    result.classList.remove("fade-out");
-    result.classList.add("fadeIn");
-  },300);
-
   const container = document.getElementById("rolePolaroid");
-  container.classList.add("fade-out");
-  setTimeout(()=>{
-    let imageSrc="", caption="";
-    if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
-    if(role==="VIP Glitter Guest"){ imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg"; caption="front row glamour & sparkle ✧";}
-    if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
-    container.innerHTML=`<div class="polaroid fadeIn"><img src="${imageSrc}"><p>${caption}</p></div>`;
-    container.classList.remove("fade-out");
-  },300);
-
-  // Show share button only after role is selected
   const share = document.getElementById("shareContainer");
-  share.classList.add("visible");
-  share.querySelector("button").classList.add("fadeIn");
+  const shareBtn = share.querySelector("button");
+
+  // Fade everything out first (like polaroid)
+  result.classList.add("fade-out");
+  container.classList.add("fade-out");
+  share.classList.add("fade-out");
+
+  setTimeout(() => {
+
+    // Update result text
+    result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
+
+    // Update polaroid
+    let imageSrc = "", caption = "";
+
+    if(role==="Pop Star Icon"){
+      imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
+      caption="center stage, spotlight on you ✦";
+    }
+    if(role==="VIP Glitter Guest"){
+      imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
+      caption="front row glamour & sparkle ✧";
+    }
+    if(role==="Backstage Muse"){
+      imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
+      caption="behind the curtain magic ✴︎";
+    }
+
+    container.innerHTML = `
+      <div class="polaroid fadeIn">
+        <img src="${imageSrc}">
+        <p>${caption}</p>
+      </div>
+    `;
+
+    // Make share visible if first time
+    share.classList.add("visible");
+
+    // Remove fade-out to fade back in
+    result.classList.remove("fade-out");
+    container.classList.remove("fade-out");
+    share.classList.remove("fade-out");
+
+  }, 300);
 }
 
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
