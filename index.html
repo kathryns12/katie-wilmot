@@ -115,8 +115,7 @@ input:focus {
 
 /* Buttons */
 button.unlock,
-button.roleBtn,
-#shareContainer button {
+button.roleBtn {
   padding: 10px 20px;
   border-radius: 30px;
   border: 1px solid #8c0f14;
@@ -127,6 +126,17 @@ button.roleBtn,
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   opacity: 0;
+}
+
+#shareContainer button {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 1px solid #8c0f14;
+  background: white;
+  color: #8c0f14;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 /* Hover effect: subtle scale and glow */
@@ -142,7 +152,7 @@ button.roleBtn:hover,
 #message { 
   margin-top: 25px; 
   font-size: clamp(18px, 4vw, 28px); 
-  opacity: 0; /* hide until role clicked */
+  opacity: 0;
   transition: opacity 0.35s ease;
 }
 
@@ -206,17 +216,15 @@ button.roleBtn:hover,
   display: flex; 
   justify-content: center; 
   min-height: 320px; 
-  opacity: 0; /* start hidden */
+  opacity: 0;
   transition: opacity 0.35s ease; 
 }
 
-#rolePolaroid.fade-out { 
-  opacity: 0; 
-}
+#rolePolaroid.fade-out { opacity: 0; }
 
 #roleResult {
   font-size: clamp(22px, 5vw, 36px);
-  opacity: 0; /* start hidden */
+  opacity: 0;
   transition: opacity 0.35s ease;
 }
 
@@ -225,24 +233,19 @@ button.roleBtn:hover,
   min-height: 60px;
   display: flex;
   justify-content: center;
-  opacity: 0; /* start hidden */
+  opacity: 0;
   transition: opacity 0.35s ease;
 }
 
-/* Correct fade system: fade-out only affects opacity */
+/* Fade system */
 #roleResult.fade-out,
 #rolePolaroid.fade-out,
-#shareContainer.fade-out {
-  opacity: 0;
-}
+#shareContainer.fade-out { opacity: 0; }
 
-/* Make visible without removing from layout */
 #roleResult.visible,
 #rolePolaroid.visible,
 #shareContainer.visible,
-#message.visible {
-  opacity: 1;
-}
+#message.visible { opacity: 1; }
 
 /* Buttons hidden initially */
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
@@ -310,7 +313,6 @@ let countdownInterval;
 let selectedRole = "";
 let invitedName = "";
 
-// Open envelope screen
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
   document.body.classList.add("showDots");
@@ -322,7 +324,6 @@ function openEnvelope() {
   document.querySelector("button.unlock").classList.add("fadeIn");
 }
 
-// Show invitation message, polaroids, countdown, and roles
 function showMessage() {
   let name = document.getElementById("nameInput").value;
   if(name.trim() === "") { alert("Enter your name, superstar 𖹭.ᐟ"); return; }
@@ -331,7 +332,7 @@ function showMessage() {
 
   const message = document.getElementById("message");
   message.innerHTML = "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
-  message.classList.add("visible"); // now controlled by visible class
+  message.classList.add("visible");
 
   const polaroids = document.getElementById("polaroids");
   polaroids.style.display = "flex";
@@ -348,7 +349,6 @@ function showMessage() {
   startCountdown();
 }
 
-// Countdown numeric-only
 function startCountdown() {
   if(countdownInterval) clearInterval(countdownInterval);
   const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
@@ -370,29 +370,22 @@ function startCountdown() {
   countdownInterval = setInterval(updateCountdown,1000);
 }
 
-// Role selection
 function selectRole(role) {
   selectedRole = role;
 
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
-  const message = document.getElementById("message");
 
-  // Remove visible class to trigger fade-out
   [result, container, share].forEach(el => {
     el.classList.remove("visible");
     el.classList.add("fade-out");
   });
 
-  // Short delay to allow fade-out
   setTimeout(() => {
-
-    // Update result text
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
 
-    // Update polaroid
-    let imageSrc = "", caption = "";
+    let imageSrc="", caption="";
     if(role==="Pop Star Icon"){
       imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
       caption="center stage, spotlight on you ✦";
@@ -406,23 +399,17 @@ function selectRole(role) {
       caption="behind the curtain magic ✴︎";
     }
 
-    container.innerHTML = `
-      <div class="polaroid fadeIn">
-        <img src="${imageSrc}">
-        <p>${caption}</p>
-      </div>
-    `;
+    container.innerHTML = `<div class="polaroid fadeIn"><img src="${imageSrc}"><p>${caption}</p></div>`;
 
-    // Remove fade-out and add visible to fade in
-    [result, container, share].forEach(el => {
+    [result, container, share].forEach(el=>{
       el.classList.remove("fade-out");
       el.classList.add("visible");
     });
 
-  }, 200); // slightly shorter delay for smooth transition
+  },200);
 }
 
-// Share button functionality
+// Share button
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
   const shareText = `I just got invited to the biggest reveal of the year ✨
 
@@ -432,11 +419,7 @@ Name on the guest list: ${invitedName} 💌
 Reserve your seat too 💖`;
 
   if(navigator.share){
-    navigator.share({
-      title: "I got invited ✨",
-      text: shareText,
-      url: window.location.href
-    });
+    navigator.share({ title:"I got invited ✨", text:shareText, url: window.location.href });
   } else {
     navigator.clipboard.writeText(shareText + "\n\n" + window.location.href);
     alert("Invitation copied to clipboard ✨");
