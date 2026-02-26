@@ -3,6 +3,8 @@
 <head>
 <title>katie's invite 𝄞</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 
 <meta property="og:title" content="You're invited to the biggest reveal! ✨" />
@@ -19,6 +21,37 @@
 <meta name="twitter:image" content="https://kathryns12.github.io/katie-wilmot/letter-emoji.png.png" />
 
 <style>
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: clamp(28px, 7vw, 40px);
+  }
+  
+  input {
+    width: 90%;
+    font-size: 16px;
+  }
+
+  button.unlock,
+  button.roleBtn,
+  #shareContainer button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  #message {
+    font-size: clamp(16px, 4vw, 22px);
+  }
+
+  #roleResult {
+    font-size: clamp(18px, 5vw, 28px);
+  }
+
+  #polaroids .polaroid img {
+    width: clamp(140px, 40vw, 200px);
+  }
+}
+
 :root { --vh: 100vh; }
 
 html { scroll-behavior: smooth; }
