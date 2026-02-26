@@ -138,18 +138,6 @@ button.roleBtn:hover,
   box-shadow: 0 0 8px #ff8fa3, 0 0 16px #ffb3c1;
 }
 
-/* Share container adjustments */
-#shareContainer {
-  margin-top: 20px;
-  min-height: 60px;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  display: flex;
-  justify-content: center;
-}
-
-#shareContainer.visible { opacity: 1; }
-
 /* Message & Countdown */
 #message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
 
@@ -212,11 +200,6 @@ button.roleBtn:hover,
 
 #rolePolaroid.fade-out { opacity: 0; }
 
-#roleResult.fade-out,
-#shareContainer.fade-out {
-  opacity: 0;
-}
-
 #roleResult {
   font-size: clamp(22px, 5vw, 36px);
   opacity: 0;
@@ -224,7 +207,23 @@ button.roleBtn:hover,
 }
 
 #shareContainer {
+  margin-top: 20px;
+  min-height: 60px;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
   transition: opacity 0.35s ease;
+}
+
+/* Shared fade system */
+#roleResult.fade-out,
+#shareContainer.fade-out {
+  opacity: 0;
+}
+
+#roleResult.visible,
+#shareContainer.visible {
+  opacity: 1;
 }
 
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
@@ -356,9 +355,12 @@ function selectRole(role) {
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
-  const shareBtn = share.querySelector("button");
 
-  // Fade everything out first (like polaroid)
+  // First time selection → make visible
+  result.classList.add("visible");
+  share.classList.add("visible");
+
+  // Fade out everything (including if clicking same role)
   result.classList.add("fade-out");
   container.classList.add("fade-out");
   share.classList.add("fade-out");
@@ -369,8 +371,7 @@ function selectRole(role) {
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
 
     // Update polaroid
-    let imageSrc = "", caption = "";
-
+    let imageSrc="", caption="";
     if(role==="Pop Star Icon"){
       imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
       caption="center stage, spotlight on you ✦";
@@ -391,10 +392,7 @@ function selectRole(role) {
       </div>
     `;
 
-    // Make share visible if first time
-    share.classList.add("visible");
-
-    // Remove fade-out to fade back in
+    // Fade back in
     result.classList.remove("fade-out");
     container.classList.remove("fade-out");
     share.classList.remove("fade-out");
