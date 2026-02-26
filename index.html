@@ -355,15 +355,12 @@ function selectRole(role) {
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
+  const shareBtn = share.querySelector("button");
 
-  // First time selection → make visible
-  result.classList.add("visible");
-  share.classList.add("visible");
-
-  // Fade out everything (including if clicking same role)
+  // Fade out everything first (like polaroid)
   result.classList.add("fade-out");
   container.classList.add("fade-out");
-  share.classList.add("fade-out");
+  shareBtn.classList.add("fade-out");
 
   setTimeout(() => {
 
@@ -371,18 +368,19 @@ function selectRole(role) {
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
 
     // Update polaroid
-    let imageSrc="", caption="";
-    if(role==="Pop Star Icon"){
-      imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
-      caption="center stage, spotlight on you ✦";
+    let imageSrc = "", caption = "";
+
+    if(role === "Pop Star Icon"){
+      imageSrc = "https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
+      caption = "center stage, spotlight on you ✦";
     }
-    if(role==="VIP Glitter Guest"){
-      imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
-      caption="front row glamour & sparkle ✧";
+    if(role === "VIP Glitter Guest"){
+      imageSrc = "https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
+      caption = "front row glamour & sparkle ✧";
     }
-    if(role==="Backstage Muse"){
-      imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
-      caption="behind the curtain magic ✴︎";
+    if(role === "Backstage Muse"){
+      imageSrc = "https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
+      caption = "behind the curtain magic ✴︎";
     }
 
     container.innerHTML = `
@@ -392,10 +390,23 @@ function selectRole(role) {
       </div>
     `;
 
-    // Fade back in
+    // Fade in role result and polaroid
     result.classList.remove("fade-out");
     container.classList.remove("fade-out");
-    share.classList.remove("fade-out");
+    result.classList.add("fadeIn");
+    container.querySelector(".polaroid").classList.add("fadeIn");
+
+    // Show and fade in share button every time
+    share.classList.add("visible");
+    shareBtn.classList.remove("fade-out");
+    shareBtn.classList.add("fadeIn");
+
+    // Remove fadeIn after animation completes so it can retrigger on same role
+    setTimeout(() => {
+      result.classList.remove("fadeIn");
+      container.querySelector(".polaroid").classList.remove("fadeIn");
+      shareBtn.classList.remove("fadeIn");
+    }, 800);
 
   }, 300);
 }
