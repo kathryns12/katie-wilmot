@@ -22,6 +22,7 @@ body {
   cursor: url('https://cur.cursors-4u.net/cursors/cur-9/cur862.cur'), auto;
 }
 
+/* Polka dots */
 body.showDots::before {
   content: "";
   position: fixed;
@@ -35,9 +36,10 @@ body.showDots::before {
 
 @keyframes moveDots {
   from { background-position: 0px 0px; }
-  to   { background-position: 300px 0px; }
+  to { background-position: 300px 0px; }
 }
 
+/* Smooth fade utility */
 .fadeIn {
   opacity: 0;
   animation: smoothFade 0.8s ease forwards;
@@ -48,6 +50,7 @@ body.showDots::before {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Envelope */
 #envelopeScreen {
   position: fixed;
   inset: 0;
@@ -71,12 +74,13 @@ body.showDots::before {
   100% { transform: translateY(0); }
 }
 
+/* Layout */
 .container { padding: 20px 10%; }
 
 h1 {
   font-size: clamp(36px, 8vw, 60px);
   margin-top: 0;
-  margin-bottom: 10px; /* closer to input */
+  margin-bottom: 10px;
   opacity: 0;
 }
 
@@ -87,35 +91,17 @@ input {
   border-radius: 30px;
   border: 2px solid #8c0f14;
   text-align: center;
-  margin-top: 10px; /* slightly closer */
+  margin-top: 10px;
   opacity: 0;
 }
 
 input:focus {
-  outline: 2px solid #8c0f14; /* keeps outline same as unlock button */
+  outline: 2px solid #8c0f14;
   outline-offset: 0;
 }
 
-button.unlock {
-  padding: 10px 20px;
-  border-radius: 30px;
-  border: 1px solid #8c0f14;
-  background: white;
-  color: #8c0f14;
-  font-weight: bold;
-  margin: 10px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  opacity: 0;
-}
-
-button.unlock:hover {
-  background: #ffe6e9;
-  transform: scale(1.08);
-  box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
-}
-
-/* Smooth hover like unlock button */
+/* Buttons - unified unlock, role, and share */
+button.unlock,
 button.roleBtn,
 #shareContainer button {
   padding: 10px 20px;
@@ -126,9 +112,11 @@ button.roleBtn,
   font-weight: bold;
   margin: 10px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  opacity: 0;
 }
 
+button.unlock:hover,
 button.roleBtn:hover,
 #shareContainer button:hover {
   background: #ffe6e9;
@@ -136,6 +124,7 @@ button.roleBtn:hover,
   box-shadow: 0 0 12px #ff8fa3, 0 0 20px #ffb3c1;
 }
 
+/* Share container adjustments */
 #shareContainer {
   margin-top: 20px;
   min-height: 60px;
@@ -145,22 +134,12 @@ button.roleBtn:hover,
 
 #shareContainer.visible { opacity: 1; }
 
-#shareContainer button {
-  background: #8c0f14;
-  color: white;
-  border: none;
-}
-
-#shareContainer button:hover {
-  background: #b81d24;
-  box-shadow: 0 0 14px #ff8fa3, 0 0 24px #ffb3c1;
-}
-
+/* Message & Countdown */
 #message { margin-top: 25px; font-size: clamp(18px, 4vw, 28px); }
 
 #countdownContainer {
   margin-top: 25px;
-  margin-bottom: 50px; /* extra space after countdown */
+  margin-bottom: 50px;
   display: none;
   flex-direction: column;
   align-items: center;
@@ -200,8 +179,11 @@ button.roleBtn:hover,
   50% { transform: scale(1.08); box-shadow: 0 6px 14px rgba(255,143,163,0.8),0 0 12px rgba(255,179,193,0.5);}
 }
 
+/* Roles */
 #roles { display: none; }
+#roles h2 { margin-bottom: 10px; }
 
+/* Polaroids */
 #polaroids { display: none; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 30px 0; }
 
 .polaroid { background: white; padding: 15px 15px 35px; box-shadow: 0 6px 12px rgba(0,0,0,0.25); transform: rotate(-2deg); transition: 0.3s ease; }
@@ -210,19 +192,13 @@ button.roleBtn:hover,
 
 .polaroid:hover { transform: rotate(0deg) scale(1.05); }
 
-#rolePolaroid {
-  margin-top: 25px;
-  display: flex;
-  justify-content: center;
-  min-height: 320px;
-  opacity: 1;
-  transition: opacity 0.35s ease;
-}
+#rolePolaroid { margin-top: 25px; display: flex; justify-content: center; min-height: 320px; opacity: 1; transition: opacity 0.35s ease; }
 
 #rolePolaroid.fade-out { opacity: 0; }
 
 #roleResult { font-size: clamp(22px, 5vw, 36px); opacity: 0; transition: opacity 0.35s ease; }
 button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
+
 </style>
 </head>
 
@@ -318,19 +294,25 @@ function showMessage() {
 
   const roleSection = document.getElementById("roles");
   roleSection.style.display = "block";
-  roleSection.querySelectorAll("button.roleBtn").forEach(b => b.style.opacity=1);
+  roleSection.querySelectorAll("button.roleBtn").forEach(b => b.classList.add("fadeIn"));
 
   startCountdown();
 }
 
-// Countdown same as before
+// Countdown same as before (numeric-only)
 function startCountdown() {
   if(countdownInterval) clearInterval(countdownInterval);
   const eventDate = new Date(Date.UTC(2026,2,20,3,0,0)).getTime();
   function updateCountdown() {
     const now = new Date().getTime();
     const distance = eventDate - now;
-    if(distance<=0){ clearInterval(countdownInterval); document.getElementById("daysBox").textContent="0"; document.getElementById("hoursBox").textContent="0"; document.getElementById("minutesBox").textContent="0"; return; }
+    if(distance<=0){
+      clearInterval(countdownInterval);
+      document.getElementById("daysBox").textContent="0";
+      document.getElementById("hoursBox").textContent="0";
+      document.getElementById("minutesBox").textContent="0";
+      return;
+    }
     document.getElementById("daysBox").textContent = Math.floor(distance/(1000*60*60*24));
     document.getElementById("hoursBox").textContent = Math.floor((distance/(1000*60*60))%24);
     document.getElementById("minutesBox").textContent = Math.floor((distance/1000/60)%60);
@@ -347,7 +329,7 @@ function selectRole(role) {
   setTimeout(()=>{
     result.innerHTML = "✴︎ you are officially our " + role + "! ✴︎";
     result.classList.remove("fade-out");
-    result.style.opacity=1;
+    result.classList.add("fadeIn");
   },300);
 
   const container = document.getElementById("rolePolaroid");
@@ -357,12 +339,13 @@ function selectRole(role) {
     if(role==="Pop Star Icon"){ imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg"; caption="center stage, spotlight on you ✦";}
     if(role==="VIP Glitter Guest"){ imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg"; caption="front row glamour & sparkle ✧";}
     if(role==="Backstage Muse"){ imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg"; caption="behind the curtain magic ✴︎";}
-    container.innerHTML=`<div class="polaroid"><img src="${imageSrc}"><p>${caption}</p></div>`;
+    container.innerHTML=`<div class="polaroid fadeIn"><img src="${imageSrc}"><p>${caption}</p></div>`;
     container.classList.remove("fade-out");
   },300);
 
   const share = document.getElementById("shareContainer");
   share.classList.add("visible");
+  share.querySelector("button").classList.add("fadeIn");
 }
 
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
