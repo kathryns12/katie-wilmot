@@ -512,18 +512,18 @@ function selectRole(displayRole, officialTitle, symbol) {
 }
 
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
-  const shareText = `I just got invited to the biggest reveal of the year ✨
+  const shareText = `i just got invited to the biggest reveal of the year ✨
 
-Role: ${selectedRole}
-Name on the guest list: ${invitedName} 💌
+role: ${selectedRole}
+name on the guest list: ${invitedName} 💌
 
-Reserve your seat too 💖`;
+reserve your seat too 💖`;
 
   if(navigator.share){
-    navigator.share({ title:"I got invited ✨", text:shareText, url: window.location.href });
+    navigator.share({ title:"i got invited ✨", text:shareText, url: window.location.href });
   } else {
     navigator.clipboard.writeText(shareText + "\n\n" + window.location.href);
-    alert("Invitation copied to clipboard ✨");
+    alert("invitation copied to clipboard ✨");
   }
 });
 </script>
