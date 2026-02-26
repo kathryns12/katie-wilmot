@@ -121,6 +121,14 @@ body.showDots::before {
   100% { transform: translateY(0); }
 }
 
+.saveDateText {
+  font-size: clamp(24px, 6vw, 40px);
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  opacity: 0.9;
+}
+
 /* Layout */
 .container { padding: 20px 10%; }
 
@@ -337,7 +345,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   <img src="https://imgproxy.attic.sh/insecure/f:png/plain/https://attic.sh/qtol93tg94pzjsdlfe4r3c63d46b"
        class="envelope-img"
        onclick="openEnvelope()">
-  <p>click to save the date !</p>
+  <p class="saveDateText">click to save the date !</p>
 </div>
 
 <div class="container">
