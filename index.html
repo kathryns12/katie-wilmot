@@ -315,7 +315,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 <br>
 <button class="unlock" onclick="showMessage()">unlock my invitation ⭑.ᐟ</button>
 
-<div id="message">𖹭.ᐟ</div>
+<div id="message"></div>
 
 <div id="polaroids">
   <div class="polaroid">
@@ -384,7 +384,7 @@ function showMessage() {
   invitedName = name;
 
   const message = document.getElementById("message");
-  message.innerHTML = "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year";
+  message.innerHTML = "dearest " + name + " 𝄞<br>you are invited to the biggest reveal of the year 𖹭.ᐟ";
   message.classList.add("visible");
 
   const polaroids = document.getElementById("polaroids");
@@ -441,18 +441,26 @@ function selectRole(displayRole, officialTitle, symbol) {
     let imageSrc="", caption="";
     if(displayRole==="on the strings"){
   imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
-  caption="center stage, spotlight on you " + symbol;
+  caption="make sure to bring ur guitar pick ( • ᴗ - ) ";
     }
     if(displayRole==="on the keys"){
   imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
-  caption="front row glamour & sparkle " + symbol;
+  caption="chip ur nails, olivia rodrigo style ◝(ᵔᗜᵔ)◜";
     }
     if(displayRole==="with the mic"){
   imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
-  caption="behind the curtain magic " + symbol;
+  caption="drinks lots of water ( ˶˘ ³˘)♡";
     }
 
-    container.innerHTML = `<div class="polaroid fadeIn"><img src="${imageSrc}"><p>${caption}</p></div>`;
+  container.innerHTML = `
+   <div class="polaroid fadeIn">
+     <img src="${imageSrc}">
+     <p>
+     ${caption}<br>
+     <span style="font-size:0.9em; opacity:0.8;">— katie ${symbol}</span>
+     </p>
+  </div>
+  `;
 
     [result, container, share].forEach(el=>{
       el.classList.remove("fade-out");
