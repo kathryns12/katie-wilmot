@@ -515,21 +515,16 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   <button>✨ share my invitation</button>
 </div>
 
-<div id="creditsSection">
-  <button id="creditsToggle">
-    art credits <span id="creditsArrow">▼</span>
-  </button>
-
-<div id="creditsContent">
-    <ul>
-      <li>art by <a href="#" target="_blank">artist 1</a> commissioned by <a href="#" target="_blank">commissioner 1</a></li>
-      <li>art by <a href="#" target="_blank">artist 2</a> commissioned by <a href="#" target="_blank">commissioner 2</a></li>
-      <li>art by <a href="#" target="_blank">artist 3</a> commissioned by <a href="#" target="_blank">commissioner 3</a></li>
-      <li>art by <a href="#" target="_blank">artist 4</a> commissioned by <a href="#" target="_blank">commissioner 4</a></li>
-      <li>art by <a href="#" target="_blank">artist 5</a> commissioned by <a href="#" target="_blank">commissioner 5</a></li>
-      <li>art by <a href="#" target="_blank">artist 6</a> commissioned by <a href="#" target="_blank">commissioner 6</a></li>
-    </ul>
-  </div>
+<div id="creditsSection" style="display:none; margin-top:20px;">
+  <button id="creditsButton">art credits ⬇️</button>
+  <ul id="creditsContent">
+    <li>1st polaroid art by <a href="https://www.instagram.com/sheepshoof/" target="_blank">sheepshoof</a> commissioned by <a href="#" target="_blank">commissioner 1</a></li>
+    <li>2nd polaroid art by <a href="https://www.instagram.com/sheepshoof/" target="_blank">sheepshoof</a> commissioned by <a href="https://www.instagram.com/p/DKHqpXDI7dM/" target="_blank">katiesfeely</a></li>
+    <li>3rd polaroid art by <a href="https://www.instagram.com/chimoart_/" target="_blank">chimoart_</a> commissioned by <a href="https://www.instagram.com/p/DLnJwWdN_xd/?img_index=1" target="_blank">katiesfeely</a></li>
+    <li>4th polaroid art by <a href="https://www.instagram.com/chimoart_/" target="_blank">chimoart_</a> commissioned by <a href="https://www.instagram.com/p/DJ4b9XaI72A/" target="_blank">katiesfeely</a></li>
+    <li>5th polaroid art by <a href="https://www.instagram.com/chimoart_/" target="_blank">chimoart_</a> commissioned by <a href="https://www.instagram.com/p/DLnJwWdN_xd/?img_index=1" target="_blank">katiesfeely</a></li>
+    <li>share preview art by <a href="https://www.instagram.com/tomandosal/" target="_blank">tomandosal</a> commissioned by <a href="https://www.instagram.com/p/DSAjRImiO_f/" target="_blank">katiesfeely</a></li>
+  </ul>
 </div>
 
 </div>
@@ -604,7 +599,7 @@ function selectRole(displayRole, officialTitle, symbol) {
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
-  document.getElementById("creditsSection").classList.add("visible");
+  const creditsSection = document.getElementById("creditsSection");
 
   [result, container, share].forEach(el => {
     el.classList.remove("visible");
@@ -616,32 +611,35 @@ function selectRole(displayRole, officialTitle, symbol) {
 
     let imageSrc="", caption="";
     if(displayRole==="on the strings"){
-  imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
-  caption="make sure to bring ur guitar pick <span class='kaomoji'>( • ᴗ - )</span>";
+      imageSrc="https://i.pinimg.com/736x/24/8f/21/248f21b119a13620e5a8e3fb8c3daf47.jpg";
+      caption="make sure to bring ur guitar pick <span class='kaomoji'>( • ᴗ - )</span>";
     }
     if(displayRole==="on the keys"){
-  imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
-  caption="chip ur nails, olivia rodrigo style <span class='kaomoji'>◝(ᵔᗜᵔ)◜</span>";
+      imageSrc="https://i.pinimg.com/736x/75/af/76/75af7600937b67bc25723abdb33cfdd7.jpg";
+      caption="chip ur nails, olivia rodrigo style <span class='kaomoji'>◝(ᵔᗜᵔ)◜</span>";
     }
     if(displayRole==="with the mic"){
-  imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
-  caption="drink lots of water <span class='kaomoji'>( ˶˘ ³˘)♡</span>";
+      imageSrc="https://i.pinimg.com/736x/f3/f1/18/f3f118a9f55d6d15a4735d4bf9228f2e.jpg";
+      caption="drink lots of water <span class='kaomoji'>( ˶˘ ³˘)♡</span>";
     }
 
-  container.innerHTML = `
-   <div class="polaroid fadeIn">
-     <img src="${imageSrc}">
-     <p>
-     ${caption}<br>
-     <span style="font-size:0.9em; opacity:0.8;">— katie ${symbol}</span>
-     </p>
-  </div>
-  `;
+    container.innerHTML = `
+      <div class="polaroid fadeIn">
+        <img src="${imageSrc}">
+        <p>
+          ${caption}<br>
+          <span style="font-size:0.9em; opacity:0.8;">— katie ${symbol}</span>
+        </p>
+      </div>
+    `;
 
     [result, container, share].forEach(el=>{
       el.classList.remove("fade-out");
       el.classList.add("visible");
     });
+
+    // Show credits button after role is revealed
+    showCreditsButton();
 
   },200);
 }
@@ -662,8 +660,16 @@ reserve ur spot too 💖`;
   }
 });
 
-document.getElementById("creditsToggle").addEventListener("click", function() {
-  document.getElementById("creditsSection").classList.toggle("open");
+// --- CREDITS SECTION JS ---
+function showCreditsButton() {
+  const creditsSection = document.getElementById("creditsSection");
+  creditsSection.style.display = "block"; // make it appear
+  setTimeout(() => creditsSection.classList.add("visible"), 50); // fade in
+}
+
+document.getElementById("creditsButton").addEventListener("click", () => {
+  const creditsContent = document.getElementById("creditsContent");
+  creditsContent.classList.toggle("visible"); // fade in/out list
 });
 </script>
 
