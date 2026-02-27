@@ -375,42 +375,27 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   margin-top: 25px;
   opacity: 0;
   transition: opacity 0.35s ease;
-}
-
-#creditsToggle {
-  background: none;
-  border: none;
-  font-family: 'Gaegu', cursive;
-  font-size: 18px;
-  color: #8c0f14;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: transform 0.2s ease;
-}
-
-#creditsToggle:hover {
-  transform: scale(1.05);
-}
-
-#creditsArrow {
-  transition: transform 0.3s ease;
+  text-align: center;
 }
 
 #creditsContent {
   opacity: 0;
-  transform: translateY(-8px);
   pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease;
   margin-top: 12px;
-  background: #ffe6e9; /* soft blush pink */
+  background: #ffe6e9; 
   padding: 18px 20px;
   border-radius: 18px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.12);
   display: inline-block;
   max-width: 90%;
 }
+
+#creditsContent.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 
 #creditsContent ul {
   list-style: none;
@@ -436,16 +421,6 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 #creditsContent a {
   color: #8c0f14;
   text-decoration: underline;
-}
-
-#creditsSection.open #creditsContent {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-#creditsSection.open #creditsArrow {
-  transform: rotate(180deg);
 }
 
 #creditsSection.visible {
@@ -515,7 +490,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   <button>✨ share my invitation</button>
 </div>
 
-<div id="creditsSection" style="display:none; margin-top:20px;">
+<div id="creditsSection">
   <button id="creditsButton">art credits ⬇️</button>
   <ul id="creditsContent">
     <li>1st polaroid art by <a href="https://www.instagram.com/sheepshoof/" target="_blank">sheepshoof</a> commissioned by <a href="#" target="_blank">commissioner 1</a></li>
@@ -663,13 +638,13 @@ reserve ur spot too 💖`;
 // --- CREDITS SECTION JS ---
 function showCreditsButton() {
   const creditsSection = document.getElementById("creditsSection");
-  creditsSection.style.display = "block"; // make it appear
-  setTimeout(() => creditsSection.classList.add("visible"), 50); // fade in
+  creditsSection.style.display = "block"; // make section appear
+  setTimeout(() => creditsSection.classList.add("visible"), 50); // fade-in effect
 }
 
 document.getElementById("creditsButton").addEventListener("click", () => {
   const creditsContent = document.getElementById("creditsContent");
-  creditsContent.classList.toggle("visible"); // fade in/out list
+  creditsContent.classList.toggle("visible"); // fade in/out the list
 });
 </script>
 
