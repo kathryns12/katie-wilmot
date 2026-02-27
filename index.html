@@ -384,7 +384,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 <h1 id="mainHeading">reserve a spot for a surprise ꩜</h1>
 
-<input type="text" id="nameInput" placeholder="enter your artist's name">
+<input type="text" id="nameInput" placeholder="enter your artist name ⋆.˚">
 <br>
 <button class="unlock" onclick="showMessage()">unlock my invitation ⭑.ᐟ</button>
 
@@ -438,6 +438,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 let countdownInterval;
 let selectedRole = "";
 let invitedName = "";
+let selectedOfficialTitle = "";  // add this
 
 function openEnvelope() {
   document.getElementById("envelopeScreen").style.display = "none";
@@ -498,6 +499,7 @@ function startCountdown() {
 
 function selectRole(displayRole, officialTitle, symbol) {
   selectedRole = displayRole;
+  selectedOfficialTitle = officialTitle;
 
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
@@ -544,12 +546,12 @@ function selectRole(displayRole, officialTitle, symbol) {
 }
 
 document.querySelector("#shareContainer button").addEventListener("click", ()=>{
-  const shareText = `i just got invited to the biggest reveal of the year ✨
+  const shareText = `i just got invited 2 be part of something awesome ✨
 
-role: ${selectedRole}
-name on the guest list: ${invitedName} 💌
+role: ${selectedOfficialTitle} ✰
+stage name: ${invitedName} 💌
 
-reserve ur seat too 💖`;
+reserve ur spot too 💖`;
 
   if(navigator.share){
     navigator.share({ title:"i got invited ✨", text:shareText, url: window.location.href });
