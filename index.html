@@ -399,9 +399,10 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 }
 
 #creditsContent {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
   margin-top: 10px;
 }
 
@@ -418,7 +419,9 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 }
 
 #creditsSection.open #creditsContent {
-  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 #creditsSection.open #creditsArrow {
