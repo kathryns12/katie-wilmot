@@ -367,28 +367,24 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   transform: rotate(0deg) scale(1.05);
 }
 
-/* --- CREDITS SECTION --- */
 #creditsSection {
   margin-top: 25px;
-  opacity: 0;
-  transition: opacity 0.35s ease;
   text-align: center;
 }
 
-#creditsButton {
+#creditsToggle {
   background: none;
   border: none;
   font-family: 'Gaegu', cursive;
   font-size: 18px;
   color: #8c0f14;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: block; /* makes it take full width, so button is on top */
+  margin: 0 auto 12px auto; /* centers button and adds space below */
   transition: transform 0.2s ease;
 }
 
-#creditsButton:hover {
+#creditsToggle:hover {
   transform: scale(1.05);
 }
 
@@ -396,7 +392,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
-  margin-top: 12px;
+  margin-top: 0;
   background: #ffe6e9; 
   padding: 18px 20px;
   border-radius: 18px;
@@ -502,7 +498,7 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 <!-- --- CREDITS SECTION --- -->
 <div id="creditsSection" style="display:none;">
-  <button id="creditsButton">art credits ✧</button>
+  <button id="creditsToggle">art credits ✧</button>
   <div id="creditsContent">
     <ul>
       <li>Art by <a href="https://artist1.example.com" target="_blank">Artist 1</a> commissioned by <a href="https://kathryns12.github.io/katie-wilmot/" target="_blank">Katie Wilmot</a></li>
@@ -622,9 +618,7 @@ function selectRole(displayRole, officialTitle, symbol) {
       el.classList.add("visible");
     });
 
-    // --- SHOW CREDITS BUTTON ---
-    showCreditsButton();
-
+    showCreditsSection();
   },200);
 }
 
@@ -644,17 +638,17 @@ reserve ur spot too 💖`;
   }
 });
 
-// --- CREDITS SECTION JS ---
-function showCreditsButton() {
+function showCreditsSection() {
   const creditsSection = document.getElementById("creditsSection");
   creditsSection.style.display = "block";
-  setTimeout(() => creditsSection.classList.add("visible"), 50);
 }
 
-document.getElementById("creditsButton").addEventListener("click", () => {
+document.getElementById("creditsToggle").addEventListener("click", () => {
   const creditsContent = document.getElementById("creditsContent");
   creditsContent.classList.toggle("visible");
 });
+
+
 </script>
 
 </body>
