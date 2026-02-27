@@ -403,14 +403,34 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
   transform: translateY(-8px);
   pointer-events: none;
   transition: opacity 0.35s ease, transform 0.35s ease;
-  margin-top: 10px;
+  margin-top: 12px;
+  background: #ffe6e9; /* soft blush pink */
+  padding: 18px 20px;
+  border-radius: 18px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  display: inline-block;
+  max-width: 90%;
 }
 
 #creditsContent ul {
-  list-style: disc;
-  padding-left: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   text-align: left;
-  display: inline-block;
+}
+
+#creditsContent li {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+#creditsContent li:last-child {
+  margin-bottom: 0;
+}
+
+#creditsContent li::before {
+  content: "✧ ";
+  color: #8c0f14;
 }
 
 #creditsContent a {
