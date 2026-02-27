@@ -373,6 +373,8 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 #creditsSection {
   margin-top: 25px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
 #creditsToggle {
@@ -421,6 +423,10 @@ button.roleBtn { opacity: 0; transition: opacity 0.35s ease; }
 
 #creditsSection.open #creditsArrow {
   transform: rotate(180deg);
+}
+
+#creditsSection.visible {
+  opacity: 1;
 }
 </style>
 </head>
@@ -575,6 +581,7 @@ function selectRole(displayRole, officialTitle, symbol) {
   const result = document.getElementById("roleResult");
   const container = document.getElementById("rolePolaroid");
   const share = document.getElementById("shareContainer");
+  document.getElementById("creditsSection").classList.add("visible");
 
   [result, container, share].forEach(el => {
     el.classList.remove("visible");
